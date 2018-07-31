@@ -34,11 +34,11 @@ actions have been taken:
   bundle for Certificate Authorities.
 * *Option 2*: Update the `apache-config.yml` to have at least one of the next instance parameters configured: `ca_bundle_file` or
   `ca_bundle_dir`, whose values must be, respectively, the absolute paths to your alternative Certificate Authorities' bundle
-  file (or the directory where they are). 
+  file (or the directory where they are).
 * *Option 3*: Add to the [Infrastructure Agent configuration file](https://docs.newrelic.com/docs/infrastructure/new-relic-infrastructure/configuration/configure-infrastructure-agent))
   the `ca_bundle_file` or `ca_bundle_dir` property (which are analogue to the properties explained in the previous
   bullet), and then passthrough them to the integrations by adding: `passthrough_environment: CA_BUNDLE_FILE` or
-  `passthrough_environment: CA_BUNDLE_DIR` to the `infra-agent.yml` configuration file. 
+  `passthrough_environment: CA_BUNDLE_DIR` to the `infra-agent.yml` configuration file.
 
 ## Integration development usage
 
@@ -57,3 +57,33 @@ $ ./bin/nr-apache -help
 ```
 
 For managing external dependencies [govendor tool](https://github.com/kardianos/govendor) is used. It is required to lock all external dependencies to specific version (if possible) into vendor directory.
+
+## Contributing Code
+
+We welcome code contributions (in the form of pull requests) from our user
+community. Before submitting a pull request please review [these guidelines](https://github.com/newrelic/nri-apache/blob/master/CONTRIBUTING.md).
+
+Following these helps us efficiently review and incorporate your contribution
+and avoid breaking your code with future changes to the agent.
+
+## Custom Integrations
+
+To extend your monitoring solution with custom metrics, we offer the Integrations
+Golang SDK which can be found on [github](https://github.com/newrelic/infra-integrations-sdk).
+
+Refer to [our docs site](https://docs.newrelic.com/docs/infrastructure/integrations-sdk/get-started/intro-infrastructure-integrations-sdk)
+to get help on how to build your custom integrations.
+
+## Support
+
+You can find more detailed documentation [on our website](http://newrelic.com/docs),
+and specifically in the [Infrastructure category](https://docs.newrelic.com/docs/infrastructure).
+
+If you can't find what you're looking for there, reach out to us on our [support
+site](http://support.newrelic.com/) or our [community forum](http://forum.newrelic.com)
+and we'll be happy to help you.
+
+Find a bug? Contact us via [support.newrelic.com](http://support.newrelic.com/),
+or email support@newrelic.com.
+
+New Relic, Inc.
