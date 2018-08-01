@@ -1,3 +1,6 @@
+WORKDIR      := $(shell pwd)
+TARGET       := target
+TARGET_DIR    = $(WORKDIR)/$(TARGET)
 INTEGRATION  := apache
 BINARY_NAME   = nr-$(INTEGRATION)
 GO_FILES     := ./src/
@@ -10,7 +13,7 @@ build: clean validate compile test
 
 clean:
 	@echo "=== $(INTEGRATION) === [ clean ]: removing binaries and coverage file..."
-	@rm -rfv bin coverage.xml
+	@rm -rfv bin coverage.xml $(TARGET)
 
 validate-deps:
 	@echo "=== $(INTEGRATION) === [ validate-deps ]: installing validation dependencies..."
@@ -65,5 +68,8 @@ test-only:
 
 
 test: test-deps test-only
+
+# Include thematic Makefiles
+include Makefile-*.mk
 
 .PHONY: all build clean validate-deps validate-only validate compile test-deps test-only test
