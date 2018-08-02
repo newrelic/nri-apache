@@ -87,7 +87,3 @@ Find a bug? Contact us via [support.newrelic.com](http://support.newrelic.com/),
 or email support@newrelic.com.
 
 New Relic, Inc.
-
-
-
-
