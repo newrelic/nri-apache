@@ -20,7 +20,6 @@ In order to use the Apache Integration it is required to configure
 you want to monitor with correct arguments.
 
 The integration assumes your `/server-status` is reachable though the next URL:
-
 ```
 http://127.0.0.1/server-status?auto
 ```
