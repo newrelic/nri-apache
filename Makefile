@@ -4,7 +4,7 @@ TARGET_DIR    = $(WORKDIR)/$(TARGET)
 INTEGRATION  := apache
 BINARY_NAME   = nr-$(INTEGRATION)
 GO_FILES     := ./src/
-VALIDATE_DEPS = github.com/golang/lint/golint
+VALIDATE_DEPS = golang.org/x/lint/golint
 TEST_DEPS     = github.com/axw/gocov/gocov github.com/AlekSi/gocov-xml
 
 all: build
