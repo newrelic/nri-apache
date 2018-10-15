@@ -78,9 +78,9 @@ func getModules(reader *bufio.Reader, inventory sdk.Inventory) error {
 		}
 
 		if strings.Contains(line, "_module") {
-			splitedLine := strings.Split(line, " ")
-			moduleName := splitedLine[1]
-			key := fmt.Sprintf("modules/%s", moduleName[:len(moduleName)-7])
+			splitedLine := strings.Split(line, "_module")
+			moduleName := strings.TrimSpace(splitedLine[0])
+			key := fmt.Sprintf("modules/%s", moduleName)
 			inventory.SetItem(key, "value", "enabled")
 		}
 	}
