@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.1.1 (ONCOMING)
+### Fixed
+- Error on weird modules output with message: `slice bounds out of range`.
+
 ## 1.1.0 (2018-02-08)
 ### Added
 - Allow working with own's Apache Certificate Authority through the `ca_bundle_file` and `ca_bundle_dir` configuration
