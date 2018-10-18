@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.1.2 (ONCOMING)
+### Fixed
+- The release process was incorrectly triggered, fixing tags and versioning. None change in the integration.
+
 ## 1.1.1 (ONCOMING)
 ### Fixed
 - Error on weird modules output with message: `slice bounds out of range`.
