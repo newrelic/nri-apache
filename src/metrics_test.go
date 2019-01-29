@@ -2,11 +2,10 @@ package main
 
 import (
 	"bufio"
+	"github.com/newrelic/infra-integrations-sdk/integration"
 	"reflect"
 	"strings"
 	"testing"
-
-	"github.com/newrelic/infra-integrations-sdk/metric"
 )
 
 var testApacheStatus = `Total Accesses: 66
@@ -214,15 +213,20 @@ func TestGetBytes_InvalidDataKey(t *testing.T) {
 	}
 }
 
+var entity *integration.Entity
+
 func TestPopulateMetrics(t *testing.T) {
 	// Given an Apache Status
 	rawMetrics, _ := getRawMetrics(bufio.NewReader(strings.NewReader(testApacheStatus)))
-
+	if entity == nil {
+		integration, _ := integration.New(integrationName, integrationVersion, integration.Args(&args))
+		entity, _ = integration.Entity(integrationName, "localhost")
+	}
 	// When the system populates the metrics from the Apache Status
-	populatedMetrics := metric.MetricSet{}
-	err := populateMetrics(&populatedMetrics, rawMetrics, metricsDefinition)
+	populatedMetrics := entity.NewMetricSet("ApacheSample")
+	err := populateMetrics(populatedMetrics, rawMetrics, metricsDefinition)
 
-	metricsSet := map[string]interface{}(populatedMetrics)
+	metricsSet := map[string]interface{}(populatedMetrics.Metrics)
 
 	// They populated metrics values are correct
 	if err != nil {
@@ -230,16 +234,16 @@ func TestPopulateMetrics(t *testing.T) {
 	}
 
 	// TODO: use assertions library for tests
-	if len(metricsSet) != 14 {
-		t.Errorf("metricsSet length = %d. Expected 14", len(metricsSet))
+	if len(metricsSet) != 13 {
+		t.Errorf("metricsSet length = %d. Expected 13", len(metricsSet))
 	}
 	if bytes, _ := getBytes(rawMetrics); bytes != float64(73*1024) {
 		t.Errorf("getBytes = %f. Expected 73*1024", bytes)
 	}
-	if metricsSet["server.idleWorkers"] != 4 {
+	if metricsSet["server.idleWorkers"] != 4.0 {
 		t.Errorf("server.idleWorkers = %d. Expected 4", metricsSet["server.idleWorkers"])
 	}
-	if metricsSet["server.busyWorkers"] != 1 {
+	if metricsSet["server.busyWorkers"] != 1.0 {
 		t.Errorf("server.busyWorkers = %d. Expected 1", metricsSet["server.busyWorkers"])
 	}
 	const expectedScoreBoard = "_W___......_CDCDII.II......KKKKKGG................__R_W.....S.....LS"
@@ -287,12 +291,16 @@ func TestPopulateMetrics(t *testing.T) {
 func TestPopulateInvalidMetricsFormat(t *testing.T) {
 	// Given an invalid format for the Apache Status
 	rawMetrics, _ := getRawMetrics(bufio.NewReader(strings.NewReader("some invalid\nstring is here:\nhello!")))
+	if entity == nil {
+		integration, _ := integration.New(integrationName, integrationVersion, integration.Args(&args))
+		entity, _ = integration.Entity(integrationName, "localhost")
+	}
 
 	// When the system populates the metrics from the Apache Status
-	populatedMetrics := metric.MetricSet{}
-	err := populateMetrics(&populatedMetrics, rawMetrics, metricsDefinition)
+	populatedMetrics := entity.NewMetricSet("ApacheSample")
+	err := populateMetrics(populatedMetrics, rawMetrics, metricsDefinition)
 
-	metricsSet := map[string]interface{}(populatedMetrics)
+	metricsSet := map[string]interface{}(populatedMetrics.Metrics)
 
 	// Then an error is returned
 	if err == nil {
@@ -300,7 +308,7 @@ func TestPopulateInvalidMetricsFormat(t *testing.T) {
 	}
 
 	// As no metrics are set
-	if len(metricsSet) != 0 {
-		t.Errorf("no metrics should be set and there are %d", len(metricsSet))
+	if len(metricsSet) != 1 {
+		t.Errorf("no metrics should be set and there are %d %+v", len(metricsSet), metricsSet)
 	}
 }

@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/newrelic/infra-integrations-sdk/data/metric"
 	"github.com/newrelic/infra-integrations-sdk/log"
-	"github.com/newrelic/infra-integrations-sdk/metric"
 )
 
 const (
@@ -50,7 +50,7 @@ func asValue(value string) interface{} {
 	return value
 }
 
-func populateMetrics(sample *metric.MetricSet, metrics map[string]interface{}, metricsDefinition map[string][]interface{}) error {
+func populateMetrics(sample *metric.Set, metrics map[string]interface{}, metricsDefinition map[string][]interface{}) error {
 	for metricName, metricInfo := range metricsDefinition {
 		rawSource := metricInfo[0]
 		metricType := metricInfo[1].(metric.SourceType)
@@ -79,8 +79,7 @@ func populateMetrics(sample *metric.MetricSet, metrics map[string]interface{}, m
 			continue
 		}
 	}
-
-	if len(*sample) < 2 {
+	if len(sample.Metrics) < 2 {
 		return fmt.Errorf("no metrics were found on the status response. Probably caused by a wrong response format")
 	}
 	return nil
@@ -149,7 +148,7 @@ func getRawMetrics(reader *bufio.Reader) (map[string]interface{}, error) {
 	return metrics, nil
 }
 
-func getMetricsData(status *Status, sample *metric.MetricSet) error {
+func getMetricsData(status *Status, sample *metric.Set) error {
 	netClient := status.NewClient()
 
 	log.Debug("retrieving Apache Status from %s", args.StatusURL)
