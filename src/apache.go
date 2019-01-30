@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/newrelic/infra-integrations-sdk/data/inventory"
 	"net/url"
 	"time"
 
@@ -39,7 +38,7 @@ func main() {
 
 	if args.All() || args.Inventory {
 		log.Debug("Fetching data for '%s' integration", integrationName+"-inventory")
-		fatalIfErr(setInventory(inventory.New(), u))
+		fatalIfErr(setInventory(entity.Inventory, u))
 	}
 
 	if args.All() || args.Metrics {
