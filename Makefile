@@ -35,7 +35,7 @@ else
 		exit 1 ;\
 	fi
 	@printf "=== $(INTEGRATION) === [ validate ]: running golint... "
-	@OUTPUT="$(shell golint ./...)" ;\
+	@OUTPUT="$(shell golint $(GO_FILES))" ;\
 	if [ -z "$$OUTPUT" ]; then \
 		echo "passed." ;\
 	else \
@@ -44,7 +44,7 @@ else
 		exit 1 ;\
 	fi
 	@printf "=== $(INTEGRATION) === [ validate ]: running go vet... "
-	@OUTPUT="$(shell go vet ./...)" ;\
+	@OUTPUT="$(shell go vet $(GO_FILES))" ;\
 	if [ -z "$$OUTPUT" ]; then \
 		echo "passed." ;\
 	else \

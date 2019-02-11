@@ -213,17 +213,17 @@ func TestGetBytes_InvalidDataKey(t *testing.T) {
 	}
 }
 
-var entity *integration.Entity
+var e *integration.Entity
 
 func TestPopulateMetrics(t *testing.T) {
 	// Given an Apache Status
 	rawMetrics, _ := getRawMetrics(bufio.NewReader(strings.NewReader(testApacheStatus)))
-	if entity == nil {
+	if e == nil {
 		integration, _ := integration.New(integrationName, integrationVersion, integration.Args(&args))
-		entity, _ = integration.Entity(integrationName, "localhost")
+		e, _ = integration.Entity(integrationName, "localhost")
 	}
 	// When the system populates the metrics from the Apache Status
-	populatedMetrics := entity.NewMetricSet("ApacheSample")
+	populatedMetrics := e.NewMetricSet("ApacheSample")
 	err := populateMetrics(populatedMetrics, rawMetrics, metricsDefinition)
 
 	metricsSet := map[string]interface{}(populatedMetrics.Metrics)
@@ -291,13 +291,13 @@ func TestPopulateMetrics(t *testing.T) {
 func TestPopulateInvalidMetricsFormat(t *testing.T) {
 	// Given an invalid format for the Apache Status
 	rawMetrics, _ := getRawMetrics(bufio.NewReader(strings.NewReader("some invalid\nstring is here:\nhello!")))
-	if entity == nil {
+	if e == nil {
 		integration, _ := integration.New(integrationName, integrationVersion, integration.Args(&args))
-		entity, _ = integration.Entity(integrationName, "localhost")
+		e, _ = integration.Entity(integrationName, "localhost")
 	}
 
 	// When the system populates the metrics from the Apache Status
-	populatedMetrics := entity.NewMetricSet("ApacheSample")
+	populatedMetrics := e.NewMetricSet("ApacheSample")
 	err := populateMetrics(populatedMetrics, rawMetrics, metricsDefinition)
 
 	metricsSet := map[string]interface{}(populatedMetrics.Metrics)

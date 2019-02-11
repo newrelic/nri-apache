@@ -1,6 +1,6 @@
 name: com.newrelic.apache
 description: Reports status and metrics for Apache server
-protocol_version: 1
+protocol_version: 2
 os: linux
 
 commands:
