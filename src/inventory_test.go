@@ -2,10 +2,9 @@ package main
 
 import (
 	"bufio"
+	inventory2 "github.com/newrelic/infra-integrations-sdk/data/inventory"
 	"strings"
 	"testing"
-
-	"github.com/newrelic/infra-integrations-sdk/sdk"
 )
 
 var testGetModulesCorrectFormat = `Loaded Modules:
@@ -139,29 +138,29 @@ Loaded Modules:
 `
 
 func TestParseGetModuleCorrectFormat(t *testing.T) {
-	inventory := make(sdk.Inventory)
+	inventory := inventory2.New()
 
 	err := getModules(bufio.NewReader(strings.NewReader(testGetModulesCorrectFormat)), inventory)
 
-	if len(inventory) != 6 {
+	if len(inventory.Items()) != 6 {
 		t.Error()
 	}
-	if inventory["modules/access_compat"]["value"] != "enabled" {
+	if inventory.Items()["modules/access_compat"]["value"] != "enabled" {
 		t.Error()
 	}
-	if inventory["modules/alias"]["value"] != "enabled" {
+	if inventory.Items()["modules/alias"]["value"] != "enabled" {
 		t.Error()
 	}
-	if inventory["modules/actions"]["value"] != "enabled" {
+	if inventory.Items()["modules/actions"]["value"] != "enabled" {
 		t.Error()
 	}
-	if inventory["modules/http"]["value"] != "enabled" {
+	if inventory.Items()["modules/http"]["value"] != "enabled" {
 		t.Error()
 	}
-	if inventory["modules/so"]["value"] != "enabled" {
+	if inventory.Items()["modules/so"]["value"] != "enabled" {
 		t.Error()
 	}
-	if inventory["modules/core"]["value"] != "enabled" {
+	if inventory.Items()["modules/core"]["value"] != "enabled" {
 		t.Error()
 	}
 	if err != nil {
@@ -170,22 +169,22 @@ func TestParseGetModuleCorrectFormat(t *testing.T) {
 }
 
 func TestParseGetModuleDifferentLinesFormat(t *testing.T) {
-	inventory := make(sdk.Inventory)
+	inventory := inventory2.New()
 	err := getModules(bufio.NewReader(strings.NewReader(testGetModulesDifferentLinesFormat)), inventory)
 
-	if len(inventory) != 4 {
+	if len(inventory.Items()) != 4 {
 		t.Error()
 	}
-	if inventory["modules/alias"]["value"] != "enabled" {
+	if inventory.Items()["modules/alias"]["value"] != "enabled" {
 		t.Error()
 	}
-	if inventory["modules/http"]["value"] != "enabled" {
+	if inventory.Items()["modules/http"]["value"] != "enabled" {
 		t.Error()
 	}
-	if inventory["modules/so"]["value"] != "enabled" {
+	if inventory.Items()["modules/so"]["value"] != "enabled" {
 		t.Error()
 	}
-	if inventory["modules/core"]["value"] != "enabled" {
+	if inventory.Items()["modules/core"]["value"] != "enabled" {
 		t.Error()
 	}
 	if err != nil {
@@ -194,10 +193,10 @@ func TestParseGetModuleDifferentLinesFormat(t *testing.T) {
 }
 
 func TestParseGetModulesWrongLinesFormat(t *testing.T) {
-	inventory := make(sdk.Inventory)
+	inventory := inventory2.New()
 	err := getModules(bufio.NewReader(strings.NewReader(testWrongLinesFormat)), inventory)
 
-	if len(inventory) != 0 {
+	if len(inventory.Items()) != 0 {
 		t.Error()
 	}
 	if err != nil {
@@ -206,10 +205,10 @@ func TestParseGetModulesWrongLinesFormat(t *testing.T) {
 }
 
 func TestParseGetModulesEmptyInput(t *testing.T) {
-	inventory := make(sdk.Inventory)
+	inventory := inventory2.New()
 	err := getModules(bufio.NewReader(strings.NewReader(testEmptyInput)), inventory)
 
-	if len(inventory) != 0 {
+	if len(inventory.Items()) != 0 {
 		t.Error()
 	}
 	if err != nil {
@@ -218,13 +217,13 @@ func TestParseGetModulesEmptyInput(t *testing.T) {
 }
 
 func TestParseGetVersionCorrectFormat(t *testing.T) {
-	inventory := make(sdk.Inventory)
+	inventory := inventory2.New()
 	err := getVersion(bufio.NewReader(strings.NewReader(testGetVersionCorrectFormat)), inventory)
 
-	if len(inventory) != 1 {
+	if len(inventory.Items()) != 1 {
 		t.Error()
 	}
-	if inventory["version"]["value"] != "Apache/2.4.6 (CentOS)" {
+	if inventory.Items()["version"]["value"] != "Apache/2.4.6 (CentOS)" {
 		t.Error()
 	}
 	if err != nil {
@@ -233,13 +232,13 @@ func TestParseGetVersionCorrectFormat(t *testing.T) {
 }
 
 func TestParseGetVersionDifferentLinesFormat(t *testing.T) {
-	inventory := make(sdk.Inventory)
+	inventory := inventory2.New()
 	err := getVersion(bufio.NewReader(strings.NewReader(testGetVersionDifferentLinesFormat)), inventory)
 
-	if len(inventory) != 1 {
+	if len(inventory.Items()) != 1 {
 		t.Error()
 	}
-	if inventory["version"]["value"] != "Apache/2.4.6 (CentOS)" {
+	if inventory.Items()["version"]["value"] != "Apache/2.4.6 (CentOS)" {
 		t.Error()
 	}
 	if err != nil {
@@ -248,10 +247,10 @@ func TestParseGetVersionDifferentLinesFormat(t *testing.T) {
 }
 
 func TestParseGetVersionWrongLinesFormat(t *testing.T) {
-	inventory := make(sdk.Inventory)
+	inventory := inventory2.New()
 	err := getVersion(bufio.NewReader(strings.NewReader(testWrongLinesFormat)), inventory)
 
-	if len(inventory) != 0 {
+	if len(inventory.Items()) != 0 {
 		t.Error()
 	}
 	if err != nil {
@@ -260,10 +259,10 @@ func TestParseGetVersionWrongLinesFormat(t *testing.T) {
 }
 
 func TestParseGetVersionEmptyInput(t *testing.T) {
-	inventory := make(sdk.Inventory)
+	inventory := inventory2.New()
 	err := getVersion(bufio.NewReader(strings.NewReader(testEmptyInput)), inventory)
 
-	if len(inventory) != 0 {
+	if len(inventory.Items()) != 0 {
 		t.Error()
 	}
 	if err != nil {
@@ -272,10 +271,10 @@ func TestParseGetVersionEmptyInput(t *testing.T) {
 }
 
 func TestParseGetModulesFromCustomerOutput(t *testing.T) {
-	inventory := make(sdk.Inventory)
+	inventory := inventory2.New()
 	err := getModules(bufio.NewReader(strings.NewReader(testCustomerModules)), inventory)
 
-	if len(inventory) == 0 {
+	if len(inventory.Items()) == 0 {
 		t.Error()
 	}
 	if err != nil {

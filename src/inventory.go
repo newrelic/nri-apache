@@ -4,12 +4,12 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"github.com/newrelic/infra-integrations-sdk/data/inventory"
 	"io"
+	"net/url"
 	"os"
 	"os/exec"
 	"strings"
-
-	"github.com/newrelic/infra-integrations-sdk/sdk"
 )
 
 func getBinPath() (string, error) {
@@ -29,7 +29,12 @@ func getBinPath() (string, error) {
 
 // setInventory executes system command in order to retrieve required inventory data and calls functions which parse the result.
 // It returns a map of inventory data
-func setInventory(inventory sdk.Inventory) error {
+func setInventory(inventory *inventory.Inventory, u *url.URL) error {
+	// Inventory is only meaningful on localhost
+	if !isLocalhost(u) {
+		return nil
+	}
+
 	commandPath, err := getBinPath()
 	if err != nil {
 		return err
@@ -57,7 +62,7 @@ func setInventory(inventory sdk.Inventory) error {
 		return err
 	}
 
-	if len(inventory) == 0 {
+	if len(inventory.Items()) == 0 {
 		return fmt.Errorf("Empty result")
 	}
 	return nil
@@ -67,7 +72,7 @@ func setInventory(inventory sdk.Inventory) error {
 // contents into a map that can be processed by NR agent.
 // It appends a map of inventory data where the keys contain name of the module and values
 // indicate that module is enabled.
-func getModules(reader *bufio.Reader, inventory sdk.Inventory) error {
+func getModules(reader *bufio.Reader, inventory *inventory.Inventory) error {
 	for {
 		line, err := reader.ReadString('\n')
 		if err == io.EOF {
@@ -91,7 +96,7 @@ func getModules(reader *bufio.Reader, inventory sdk.Inventory) error {
 // getVersion reads an Apache list of compile settings and transforms its
 // contents into a map that can be processed by NR agent.
 // It appends a map of inventory data which indicates Apache Server version
-func getVersion(reader *bufio.Reader, inventory sdk.Inventory) error {
+func getVersion(reader *bufio.Reader, inventory *inventory.Inventory) error {
 	for {
 		line, err := reader.ReadString('\n')
 		if err == io.EOF {
@@ -109,4 +114,14 @@ func getVersion(reader *bufio.Reader, inventory sdk.Inventory) error {
 	}
 
 	return nil
+}
+
+func isLocalhost(u *url.URL) bool {
+	if strings.EqualFold(u.Hostname(), "127.0.0.1") {
+		return true
+	}
+	if strings.EqualFold(u.Hostname(), "localhost") {
+		return true
+	}
+	return false
 }
