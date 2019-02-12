@@ -6,12 +6,6 @@ import (
 	"testing"
 )
 
-func TestIsLocalhost(t *testing.T) {
-	assert.Equal(t, true, isLocalhost("localhost"))
-	assert.Equal(t, true, isLocalhost("127.0.0.1"))
-	assert.Equal(t, false, isLocalhost("test"))
-}
-
 func TestEntityLocal(t *testing.T) {
 	args = argumentList{
 		RemoteMonitoring: false,

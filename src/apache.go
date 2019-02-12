@@ -7,7 +7,6 @@ import (
 	"github.com/newrelic/infra-integrations-sdk/persist"
 	"net/url"
 	"os"
-	"strings"
 	"time"
 
 	sdkArgs "github.com/newrelic/infra-integrations-sdk/args"
@@ -69,7 +68,7 @@ func main() {
 	e, err := entity(i, hostname, port)
 	fatalIfErr(err)
 
-	if args.HasInventory() && !isLocalhost(hostname) {
+	if args.HasInventory() {
 		log.Debug("Fetching data for '%s' integration", integrationName+"-inventory")
 		fatalIfErr(setInventory(e.Inventory))
 	}
@@ -101,7 +100,7 @@ func entity(i *integration.Integration, hostname, port string) (*integration.Ent
 	return i.LocalEntity(), nil
 }
 
-// parseStatusURL will extract the hostname and the port from the nginx status URL.
+// parseStatusURL will extract the hostname and the port from the apache status URL.
 func parseStatusURL(statusURL string) (hostname, port string, err error) {
 	u, err := url.Parse(statusURL)
 	if err != nil {
@@ -129,16 +128,6 @@ func parseStatusURL(statusURL string) (hostname, port string, err error) {
 		port = httpDefaultPort
 	}
 	return
-}
-
-func isLocalhost(hostname string) bool {
-	if strings.EqualFold(hostname, "127.0.0.1") {
-		return true
-	}
-	if strings.EqualFold(hostname, "localhost") {
-		return true
-	}
-	return false
 }
 
 func fatalIfErr(err error) {
