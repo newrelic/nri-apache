@@ -1,0 +1,16 @@
+integration,metric_name,metric_type,metric_enabled,metric_description
+Apache,server.idleWorkers,gauge,true,Idle Apache workers
+Apache,net.bytesPerSecond,rate,true,Number of bytes per second
+Apache,server.busyWorkers,gauge,true,Busy workers
+Apache,software.version,attribute,true,Version
+Apache,net.requestsPerSecond,rate,true,Number of requests per second
+Apache,server.scoreboard.writingWorkers,gauge,true,Sending Reply
+Apache,server.scoreboard.keepAliveWorkers,gauge,true,Keepalive - read
+Apache,server.scoreboard.startingWorkers,gauge,true,Starting up
+Apache,server.scoreboard.idleCleanupWorkers,gauge,true,Idle cleanup of worker
+Apache,server.scoreboard.totalWorkers,gauge,true,Total number of workers
+Apache,server.scoreboard.closingWorkers,gauge,true,Closing connection
+Apache,server.scoreboard.finishingWorkers,gauge,true,Gracefully finishing
+Apache,server.scoreboard.loggingWorkers,gauge,true,Logging
+Apache,server.scoreboard.readingWorkers,gauge,true,Reading Request
+Apache,server.scoreboard.dnsLookupWorkers,gauge,true,DNS Lookup

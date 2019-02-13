@@ -1,0 +1,26 @@
+entity type,inventory source,inventory path
+server,modules,modules/core
+server,modules,modules/so
+server,modules,modules/http
+server,modules,modules/mpm_event
+server,modules,modules/authn_file
+server,modules,modules/authn_core
+server,modules,modules/authz_host
+server,modules,modules/authz_groupfile
+server,modules,modules/authz_user
+server,modules,modules/authz_core
+server,modules,modules/access_compat
+server,modules,modules/auth_basic
+server,modules,modules/reqtimeout
+server,modules,modules/filter
+server,modules,modules/mime
+server,modules,modules/log_config
+server,modules,modules/env
+server,modules,modules/headers
+server,modules,modules/setenvif
+server,modules,modules/version
+server,modules,modules/unixd
+server,modules,modules/status
+server,modules,modules/autoindex
+server,modules,modules/dir
+server,modules,modules/alias
