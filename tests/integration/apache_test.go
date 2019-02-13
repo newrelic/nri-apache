@@ -1,4 +1,6 @@
-package main
+// +build integration
+
+package integration
 
 import (
 	"flag"
@@ -6,7 +8,7 @@ import (
 	"github.com/newrelic/infra-integrations-sdk/log"
 	"github.com/newrelic/nri-apache/tests/integration/helpers"
 	"github.com/newrelic/nri-apache/tests/integration/jsonschema"
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -71,18 +73,13 @@ func TestApacheIntegration(t *testing.T) {
 
 	stdout, stderr, err := runIntegration(t, fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", testName))
 
-	require.NoError(t, err, "Unexpected error")
-
-	if stderr != "" {
-		t.Fatalf("Unexpected stderr output: %s", stderr)
-	}
+	assert.NoError(t, err, "Unexpected error")
+	assert.NotNil(t, stderr, "unexpected stderr")
 
 	schemaPath := filepath.Join("json-schema-files", "apache-schema.json")
 
 	err = jsonschema.Validate(schemaPath, stdout)
-	if err != nil {
-		t.Fatalf("The output of Apache integration doesn't have expected format. Err: %s", err)
-	}
+	assert.NoError(t, err, "The output of Apache integration doesn't have expected format.")
 }
 
 func TestApacheIntegrationInvalidStatusURL(t *testing.T) {
@@ -90,13 +87,14 @@ func TestApacheIntegrationInvalidStatusURL(t *testing.T) {
 
 	stdout, stderr, err := runIntegration(t, "STATUS_URL=invalidurl", fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", testName))
 
-	errMatch, _ := regexp.MatchString("unsupported protocol scheme", stderr)
-	if err == nil || !errMatch {
-		t.Fatalf("%s. Unexpected error message: %s", err.Error(), stderr)
-	}
-	if stdout != "" {
-		t.Fatalf("Unexpected output: %s", stdout)
-	}
+	expectedErrorMessage := "unsupported protocol scheme"
+
+	errMatch, _ := regexp.MatchString(expectedErrorMessage, stderr)
+
+	assert.Error(t, err, "Expected error")
+	assert.Truef(t, errMatch, "Expected error message: '%s', got: '%s'", expectedErrorMessage, stderr)
+
+	assert.NotNil(t, stdout, "unexpected stdout")
 }
 
 func TestApacheIntegrationOnlyMetrics(t *testing.T) {
@@ -104,17 +102,13 @@ func TestApacheIntegrationOnlyMetrics(t *testing.T) {
 
 	stdout, stderr, err := runIntegration(t, "METRICS=true", fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", testName))
 
-	require.NoError(t, err, "There is an error executing the Apache Integration binary")
-	if stderr != "" {
-		t.Fatalf("Unexpected stderr output: %s", stderr)
-	}
+	assert.NoError(t, err, "There is an error executing the Apache Integration binary")
+	assert.NotNil(t, stderr, "unexpected stderr")
 
 	schemaPath := filepath.Join("json-schema-files", "apache-schema-metrics.json")
 
 	err = jsonschema.Validate(schemaPath, stdout)
-	if err != nil {
-		t.Fatalf("The output of Apache integration doesn't have expected format. Err: %s", err)
-	}
+	assert.NoError(t, err, "The output of Apache integration doesn't have expected format.")
 }
 
 func TestApacheIntegrationOnlyInventory(t *testing.T) {
@@ -122,16 +116,12 @@ func TestApacheIntegrationOnlyInventory(t *testing.T) {
 
 	stdout, stderr, err := runIntegration(t, "INVENTORY=true", fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", testName))
 
-	require.NoError(t, err, "There is an error executing the Apache Integration binary")
+	assert.NoError(t, err, "There is an error executing the Apache Integration binary")
 
-	if stderr != "" {
-		t.Fatalf("Unexpected stderr output: %s", stderr)
-	}
+	assert.NotNil(t, stderr, "unexpected stderr")
 
 	schemaPath := filepath.Join("json-schema-files", "apache-schema-inventory.json")
 
 	err = jsonschema.Validate(schemaPath, stdout)
-	if err != nil {
-		t.Fatalf("The output of Apache integration doesn't have expected format. Err: %s", err)
-	}
+	assert.NoError(t, err, "The output of Apache integration doesn't have expected format.")
 }
