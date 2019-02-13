@@ -6,12 +6,6 @@ import (
 	"testing"
 )
 
-func TestIsLocalhost(t *testing.T) {
-	assert.Equal(t, true, isLocalhost("localhost"))
-	assert.Equal(t, true, isLocalhost("127.0.0.1"))
-	assert.Equal(t, false, isLocalhost("test"))
-}
-
 func TestEntityLocal(t *testing.T) {
 	args = argumentList{
 		RemoteMonitoring: false,
@@ -19,7 +13,7 @@ func TestEntityLocal(t *testing.T) {
 	i, err := integration.New("test", integrationVersion)
 	assert.NoError(t, err)
 
-	e, err := entity(i, "test_host", "1234")
+	e, err := entity(i)
 	assert.NoError(t, err)
 	assert.Nil(t, e.Metadata)
 }
@@ -55,8 +49,8 @@ func TestEntityRemote(t *testing.T) {
 	i, err := integration.New("test", integrationVersion)
 	assert.NoError(t, err)
 
-	e, err := entity(i, "test_host", "1234")
+	e, err := entity(i)
 	assert.NoError(t, err)
-	assert.Equal(t, "test_host:1234", e.Metadata.Name)
+	assert.Equal(t, "test:1234", e.Metadata.Name)
 	assert.Equal(t, entityRemoteType, e.Metadata.Namespace)
 }
