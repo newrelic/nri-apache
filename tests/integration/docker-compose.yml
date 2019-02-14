@@ -1,0 +1,9 @@
+version: '3.1'
+
+services:
+  nri-apache:
+    build:
+      context: ../../
+      dockerfile: tests/integration/Dockerfile
+    volumes:
+    - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf

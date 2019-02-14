@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"github.com/newrelic/infra-integrations-sdk/data/metric"
 	"github.com/newrelic/infra-integrations-sdk/integration"
 	"reflect"
 	"strings"
@@ -223,7 +224,9 @@ func TestPopulateMetrics(t *testing.T) {
 		e, _ = integration.Entity(integrationName, "localhost")
 	}
 	// When the system populates the metrics from the Apache Status
-	populatedMetrics := e.NewMetricSet("ApacheSample")
+	hostnameAttr := metric.Attr("hostname", "localhost")
+	portAttr := metric.Attr("port", "80")
+	populatedMetrics := e.NewMetricSet("ApacheSample", hostnameAttr, portAttr)
 	err := populateMetrics(populatedMetrics, rawMetrics, metricsDefinition)
 
 	metricsSet := map[string]interface{}(populatedMetrics.Metrics)
@@ -234,8 +237,9 @@ func TestPopulateMetrics(t *testing.T) {
 	}
 
 	// TODO: use assertions library for tests
-	if len(metricsSet) != 13 {
-		t.Errorf("metricsSet length = %d. Expected 13", len(metricsSet))
+	// Required 15 apache metrics + 2 attributes (which are reported as metrics).
+	if len(metricsSet) != 17 {
+		t.Errorf("metricsSet length = %d. Expected 17", len(metricsSet))
 	}
 	if bytes, _ := getBytes(rawMetrics); bytes != float64(73*1024) {
 		t.Errorf("getBytes = %f. Expected 73*1024", bytes)
