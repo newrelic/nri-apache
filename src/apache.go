@@ -42,30 +42,12 @@ func main() {
 	log.Debug("Starting Apache integration")
 	defer log.Debug("Apache integration exited")
 
-	var i *integration.Integration
-	var err error
-	cachePath := os.Getenv("NRIA_CACHE_PATH")
-
-	if cachePath == "" {
-		i, err = integration.New(integrationName, integrationVersion, integration.Args(&args))
-	} else {
-		var storer persist.Storer
-
-		logger := log.NewStdErr(args.Verbose)
-		storer, err = persist.NewFileStore(cachePath, logger, persist.DefaultTTL)
-		fatalIfErr(err)
-
-		i, err = integration.New(integrationName, integrationVersion, integration.Args(&args),
-			integration.Storer(storer), integration.Logger(logger))
-	}
-
+	i, err := createIntegration()
 	fatalIfErr(err)
+
 	log.SetupLogging(args.Verbose)
 
-	hostname, port, err := parseStatusURL(args.StatusURL)
-	fatalIfErr(err)
-
-	e, err := entity(i, hostname, port)
+	e, err := entity(i)
 	fatalIfErr(err)
 
 	if args.HasInventory() {
@@ -75,6 +57,9 @@ func main() {
 
 	if args.HasMetrics() {
 		log.Debug("Fetching data for '%s' integration", integrationName+"-metrics")
+
+		hostname, port, err := parseStatusURL(args.StatusURL)
+		fatalIfErr(err)
 
 		hostnameAttr := metric.Attr("hostname", hostname)
 		portAttr := metric.Attr("port", port)
@@ -91,8 +76,12 @@ func main() {
 	fatalIfErr(i.Publish())
 }
 
-func entity(i *integration.Integration, hostname, port string) (*integration.Entity, error) {
+func entity(i *integration.Integration) (*integration.Entity, error) {
 	if args.RemoteMonitoring {
+		hostname, port, err := parseStatusURL(args.StatusURL)
+		if err != nil {
+			return nil, err
+		}
 		n := fmt.Sprintf("%s:%s", hostname, port)
 		return i.Entity(n, entityRemoteType)
 	}
@@ -101,24 +90,39 @@ func entity(i *integration.Integration, hostname, port string) (*integration.Ent
 }
 
 // parseStatusURL will extract the hostname and the port from the apache status URL.
+func createIntegration() (*integration.Integration, error) {
+	cachePath := os.Getenv("NRIA_CACHE_PATH")
+	if cachePath == "" {
+		return integration.New(integrationName, integrationVersion, integration.Args(&args))
+	}
+
+	l := log.NewStdErr(args.Verbose)
+	s, err := persist.NewFileStore(cachePath, l, persist.DefaultTTL)
+	if err != nil {
+		return nil, err
+	}
+
+	return integration.New(integrationName, integrationVersion, integration.Args(&args), integration.Storer(s), integration.Logger(l))
+}
+
+// parseStatusURL will extract the hostname and the port from the nginx status URL.
 func parseStatusURL(statusURL string) (hostname, port string, err error) {
 	u, err := url.Parse(statusURL)
 	if err != nil {
 		return
 	}
 
-	isHTTP := u.Scheme == httpProtocol || u.Scheme == httpsProtocol
-	if !isHTTP {
+	if !isHTTP(u) {
 		err = errors.New("unsupported protocol scheme")
 		return
 	}
 
-	if u.Hostname() == "" {
+	hostname = u.Hostname()
+
+	if hostname == "" {
 		err = errors.New("http: no Host in request URL")
 		return
 	}
-
-	hostname = u.Hostname()
 
 	if u.Port() != "" {
 		port = u.Port()
@@ -128,6 +132,11 @@ func parseStatusURL(statusURL string) (hostname, port string, err error) {
 		port = httpDefaultPort
 	}
 	return
+}
+
+// isHTTP is checking if the URL is http/s protocol.
+func isHTTP(u *url.URL) bool {
+	return u.Scheme == httpProtocol || u.Scheme == httpsProtocol
 }
 
 func fatalIfErr(err error) {
