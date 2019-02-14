@@ -17,8 +17,6 @@ import (
 )
 
 var (
-	iName = "apache"
-
 	defaultContainer = "integration_nri-apache_1"
 
 	defaultBinPath   = "/nr-apache"

@@ -237,6 +237,7 @@ func TestPopulateMetrics(t *testing.T) {
 	}
 
 	// TODO: use assertions library for tests
+	// Required 15 apache metrics + 2 attributes (which are reported as metrics).
 	if len(metricsSet) != 17 {
 		t.Errorf("metricsSet length = %d. Expected 17", len(metricsSet))
 	}
