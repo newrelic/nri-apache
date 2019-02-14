@@ -35,7 +35,7 @@ else
 		exit 1 ;\
 	fi
 	@printf "=== $(INTEGRATION) === [ validate ]: running golint... "
-	@OUTPUT="$(shell golint ./...)" ;\
+	@OUTPUT="$(shell golint $(GO_FILES))" ;\
 	if [ -z "$$OUTPUT" ]; then \
 		echo "passed." ;\
 	else \
@@ -44,7 +44,7 @@ else
 		exit 1 ;\
 	fi
 	@printf "=== $(INTEGRATION) === [ validate ]: running go vet... "
-	@OUTPUT="$(shell go vet ./...)" ;\
+	@OUTPUT="$(shell go vet $(GO_FILES))" ;\
 	if [ -z "$$OUTPUT" ]; then \
 		echo "passed." ;\
 	else \
@@ -66,12 +66,18 @@ test-deps:
 
 test-only:
 	@echo "=== $(INTEGRATION) === [ test ]: running unit tests..."
-	@gocov test ./... | gocov-xml > coverage.xml
+	@gocov test $(GO_FILES) | gocov-xml > coverage.xml
 
 
 test: test-deps test-only
 
+integration-test: test-deps
+	@echo "=== $(INTEGRATION) === [ test ]: running integration tests..."
+	@docker-compose -f tests/integration/docker-compose.yml up -d --build
+	@go test -v -tags=integration ./tests/integration/. || (ret=$$?; docker-compose -f tests/integration/docker-compose.yml down && exit $$ret)
+	@docker-compose -f tests/integration/docker-compose.yml down
+
 # Include thematic Makefiles
 include Makefile-*.mk
 
-.PHONY: all build clean validate-deps validate-only validate compile test-deps test-only test
+.PHONY: all build clean validate-deps validate-only validate compile test-deps test-only test integration-test
