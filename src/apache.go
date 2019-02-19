@@ -95,7 +95,10 @@ func metricSet(e *integration.Entity, eventType string, hostname string, port st
 		)
 	}
 
-	return e.NewMetricSet(eventType)
+	return e.NewMetricSet(
+		eventType,
+		metric.Attr("port", port),
+	)
 }
 
 // parseStatusURL will extract the hostname and the port from the apache status URL.
