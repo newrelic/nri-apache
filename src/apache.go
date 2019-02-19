@@ -47,7 +47,7 @@ func main() {
 
 	log.SetupLogging(args.Verbose)
 
-	e, err := entity(i)
+	e, err := entity(i, args.StatusURL, args.RemoteMonitoring)
 	fatalIfErr(err)
 
 	if args.HasInventory() {
@@ -61,7 +61,7 @@ func main() {
 		hostname, port, err := parseStatusURL(args.StatusURL)
 		fatalIfErr(err)
 
-		ms := metricSet(e, "ApacheSample", hostname, port)
+		ms := metricSet(e, "ApacheSample", hostname, port, args.RemoteMonitoring)
 		provider := &Status{
 			CABundleDir:  args.CABundleDir,
 			CABundleFile: args.CABundleFile,
@@ -73,9 +73,9 @@ func main() {
 	fatalIfErr(i.Publish())
 }
 
-func entity(i *integration.Integration) (*integration.Entity, error) {
-	if args.RemoteMonitoring {
-		hostname, port, err := parseStatusURL(args.StatusURL)
+func entity(i *integration.Integration, statusURL string, remote bool) (*integration.Entity, error) {
+	if remote {
+		hostname, port, err := parseStatusURL(statusURL)
 		if err != nil {
 			return nil, err
 		}
@@ -86,8 +86,8 @@ func entity(i *integration.Integration) (*integration.Entity, error) {
 	return i.LocalEntity(), nil
 }
 
-func metricSet(e *integration.Entity, eventType, hostname, port string) *metric.Set {
-	if args.RemoteMonitoring {
+func metricSet(e *integration.Entity, eventType, hostname, port string, remote bool) *metric.Set {
+	if remote {
 		return e.NewMetricSet(
 			eventType,
 			metric.Attr("hostname", hostname),
