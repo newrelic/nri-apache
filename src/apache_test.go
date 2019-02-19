@@ -7,13 +7,10 @@ import (
 )
 
 func TestEntityLocal(t *testing.T) {
-	args = argumentList{
-		RemoteMonitoring: false,
-	}
 	i, err := integration.New("test", integrationVersion)
 	assert.NoError(t, err)
 
-	e, err := entity(i)
+	e, err := entity(i, "", false)
 	assert.NoError(t, err)
 	assert.Nil(t, e.Metadata)
 }
@@ -42,14 +39,10 @@ func TestParseURL(t *testing.T) {
 }
 
 func TestEntityRemote(t *testing.T) {
-	args = argumentList{
-		StatusURL:        "http://test:1234/status",
-		RemoteMonitoring: true,
-	}
 	i, err := integration.New("test", integrationVersion)
 	assert.NoError(t, err)
 
-	e, err := entity(i)
+	e, err := entity(i, "http://test:1234/status", true)
 	assert.NoError(t, err)
 	assert.Equal(t, "test:1234", e.Metadata.Name)
 	assert.Equal(t, entityRemoteType, e.Metadata.Namespace)
