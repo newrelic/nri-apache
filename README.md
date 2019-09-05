@@ -8,6 +8,8 @@ and `apache2ctl` command in Debian family distributions.
 Metrics data is obtained doing HTTP requests to `/server-status` endpoint, provided by
 `mod_status` Apache module.
 
+See our [documentation web site](https://docs.newrelic.com/docs/integrations/host-integrations/host-integrations-list/apache-monitoring-integration) for more details.
+
 ## Usage
 This is the description about how to run the Apache Integration with New Relic
 Infrastructure agent, so it is required to have the agent installed
