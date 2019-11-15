@@ -1,6 +1,6 @@
 FROM golang:1.10 as builder-apache
-RUN go get -d github.com/newrelic/nri-apache/... && \
-    cd /go/src/github.com/newrelic/nri-apache && \
+COPY . /go/src/github.com/newrelic/nri-apache/
+RUN cd /go/src/github.com/newrelic/nri-apache && \
     make && \
     strip ./bin/nri-apache
 
