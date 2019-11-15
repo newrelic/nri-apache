@@ -19,7 +19,7 @@ import (
 var (
 	defaultContainer = "integration_nri-apache_1"
 
-	defaultBinPath   = "/nr-apache"
+	defaultBinPath   = "/nri-apache"
 	defaultStatusURL = "http://127.0.0.1/server-status?auto"
 
 	// cli flags

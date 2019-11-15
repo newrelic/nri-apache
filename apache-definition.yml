@@ -6,12 +6,12 @@ os: linux
 commands:
     metrics:
         command:
-          - ./bin/nr-apache
+          - ./bin/nri-apache
           - --metrics
         interval: 15
     inventory:
         command:
-          - ./bin/nr-apache
+          - ./bin/nri-apache
           - --inventory
         prefix: config/apache
         interval: 60

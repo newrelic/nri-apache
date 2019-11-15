@@ -49,13 +49,13 @@ Assuming that you have the source code and Go tool installed you can build and r
 ```bash
 $ make
 ```
-* The command above will execute the tests for the Apache Integration and build an executable file called `nr-apache` under `bin` directory. Run `nr-apache`:
+* The command above will execute the tests for the Apache Integration and build an executable file called `nri-apache` under `bin` directory. Run `nri-apache`:
 ```bash
-$ ./bin/nr-apache
+$ ./bin/nri-apache
 ```
-* If you want to know more about usage of `./bin/nr-apache` check
+* If you want to know more about usage of `./bin/nri-apache` check
 ```bash
-$ ./bin/nr-apache -help
+$ ./bin/nri-apache -help
 ```
 
 For managing external dependencies [govendor tool](https://github.com/kardianos/govendor) is used. It is required to lock all external dependencies to specific version (if possible) into vendor directory.

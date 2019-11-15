@@ -24,7 +24,7 @@ type argumentList struct {
 
 const (
 	integrationName    = "com.newrelic.apache"
-	integrationVersion = "1.2.0"
+	integrationVersion = "1.4.0"
 
 	defaultHTTPTimeout = time.Second * 1
 
