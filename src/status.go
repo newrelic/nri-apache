@@ -17,17 +17,14 @@ import (
 
 // Status will create new HTTP client based on its configuration
 type Status struct {
-	CABundleFile string
-	CABundleDir  string
-	HTTPTimeout  time.Duration
+	CABundleFile  string
+	CABundleDir   string
+	ValidateCerts bool
+	HTTPTimeout   time.Duration
 }
 
 // NewClient creates a new http.Client based on the provider's configuration
 func (p Status) NewClient() *http.Client {
-	return httpClient(p.CABundleFile, p.CABundleDir, p.HTTPTimeout)
-}
-
-func httpClient(certFile string, certDirectory string, httpTimeout time.Duration) *http.Client {
 	// go default http transport settings
 	transport := &http.Transport{
 		Proxy:                 http.ProxyFromEnvironment,
@@ -38,12 +35,19 @@ func httpClient(certFile string, certDirectory string, httpTimeout time.Duration
 		ExpectContinueTimeout: 1 * time.Second,
 	}
 
-	if certFile != "" || certDirectory != "" {
-		transport.TLSClientConfig = &tls.Config{RootCAs: getCertPool(certFile, certDirectory)}
+	if p.CABundleFile != "" || p.CABundleDir != "" {
+		transport.TLSClientConfig = &tls.Config{RootCAs: getCertPool(p.CABundleFile, p.CABundleDir)}
+	}
+	if !p.ValidateCerts {
+		if transport.TLSClientConfig == nil {
+			transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+		} else {
+			transport.TLSClientConfig.InsecureSkipVerify = true
+		}
 	}
 
 	return &http.Client{
-		Timeout:   httpTimeout * time.Second,
+		Timeout:   p.HTTPTimeout * time.Second,
 		Transport: transport,
 	}
 }

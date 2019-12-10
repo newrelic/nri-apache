@@ -3,11 +3,12 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/newrelic/infra-integrations-sdk/data/metric"
-	"github.com/newrelic/infra-integrations-sdk/persist"
 	"net/url"
 	"os"
 	"time"
+
+	"github.com/newrelic/infra-integrations-sdk/data/metric"
+	"github.com/newrelic/infra-integrations-sdk/persist"
 
 	sdkArgs "github.com/newrelic/infra-integrations-sdk/args"
 	"github.com/newrelic/infra-integrations-sdk/integration"
@@ -20,11 +21,12 @@ type argumentList struct {
 	CABundleFile     string `default:"" help:"Alternative Certificate Authority bundle file"`
 	CABundleDir      string `default:"" help:"Alternative Certificate Authority bundle directory"`
 	RemoteMonitoring bool   `default:"false" help:"Identifies the monitored entity as 'remote'. In doubt: set to true."`
+	ValidateCerts    bool   `default:"true" help:"If the status URL is HTTPS with a self-signed certificate, set this to false if you want to avoid certificate validation"`
 }
 
 const (
 	integrationName    = "com.newrelic.apache"
-	integrationVersion = "1.4.0"
+	integrationVersion = "1.5.0"
 
 	defaultHTTPTimeout = time.Second * 1
 
@@ -63,9 +65,10 @@ func main() {
 
 		ms := metricSet(e, "ApacheSample", hostname, port, args.RemoteMonitoring)
 		provider := &Status{
-			CABundleDir:  args.CABundleDir,
-			CABundleFile: args.CABundleFile,
-			HTTPTimeout:  defaultHTTPTimeout,
+			CABundleDir:   args.CABundleDir,
+			CABundleFile:  args.CABundleFile,
+			HTTPTimeout:   defaultHTTPTimeout,
+			ValidateCerts: args.ValidateCerts,
 		}
 		fatalIfErr(getMetricsData(provider, ms))
 	}

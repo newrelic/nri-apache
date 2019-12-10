@@ -103,9 +103,10 @@ func TestNewClient(t *testing.T) {
 	ca3.WriteString(yetAnotherCA)
 
 	c := Status{
-		CABundleFile: ca1.Name(),
-		CABundleDir:  tempDir,
-		HTTPTimeout:  30,
+		CABundleFile:  ca1.Name(),
+		CABundleDir:   tempDir,
+		HTTPTimeout:   30,
+		ValidateCerts: true,
 	}.NewClient()
 
 	eTimeout := 30 * time.Second
