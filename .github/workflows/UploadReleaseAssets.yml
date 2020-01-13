@@ -1,0 +1,72 @@
+name: Go
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  CreateAdnPushUnixExecutable:
+    name: CreateAdnPushUnixExecutable
+    needs: [CreateRelease]
+    strategy:
+      matrix:
+        go: [ 1.13]
+    runs-on: ubuntu-latest
+    container: golang:${{ matrix.go }}-stretch
+    steps:
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+        id: go
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+          path: go/src/github.com/gallo-cedrone/${{ github.event.repository.name }}
+      - name: Install dependencies
+        env:
+          GOPATH: /home/runner/work/${{ github.event.repository.name }}/go
+          GOBIN: /home/runner/work/${{ github.event.repository.name }}/go/bin
+        run: |
+          IFS=- read nri INTEGRATION the_rest <<< ${{ github.event.repository.name }}
+          export PATH=$PATH:$GOBIN
+          sudo apt-get install rpm ruby ruby-dev rubygems build-essential
+          sudo gem install --no-document fpm
+          make build
+          make package
+      - name: Upload Release Asset Binary
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.release.upload_url }}
+          asset_path: ./target/bin/linux_amd64/${{ github.event.repository.name }}
+          asset_name: ${{ github.event.repository.name }}
+          asset_content_type: binary
+      - name: Upload Release Asset RPM
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.release.upload_url }}
+          asset_path: ./target/packages/rpm/${{ github.event.repository.name }}-${{ github.ref }}-dev.x86_64.rpm
+          asset_name: ${{ github.event.repository.name }}-${{ github.ref }}-dev.x86_64.rpm
+          asset_content_type: rpm
+      - name: Upload Release Asset DEB
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.release.upload_url }}
+          asset_path: ./target/packages/deb/${{ github.event.repository.name }}_${{ github.ref }}-dev_amd64.deb
+          asset_name: ${{ github.event.repository.name }}_${{ github.ref }}-dev_amd64.deb
+          asset_content_type: deb
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.release.upload_url }}
+          asset_path: ./target/packages/tarball/${{ github.event.repository.name }}_linux_${{ github.ref }}_amd64.tar.gz
+          asset_name: ${{ github.event.repository.name }}_linux_${{ github.ref }}_amd64.tar.gz
+          asset_content_type: tar
