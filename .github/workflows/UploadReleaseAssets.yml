@@ -34,6 +34,7 @@ jobs:
           sudo gem install --no-document fpm
           make build
           make package
+          ls -R .
 
       - name: Upload Release Asset Binary
         uses: actions/upload-release-asset@v1.0.1
