@@ -30,6 +30,7 @@ jobs:
         run: |
           echo ${{ github.event.repository.name }} | IFS=- read nri INTEGRATION the_rest
           export PATH=$PATH:$GOBIN
+          export VERSION=${{ github.ref }}
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential
           sudo gem install --no-document fpm
           make build
