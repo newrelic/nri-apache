@@ -1,8 +1,8 @@
 name: UploadReleaseAssets
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types: 
+      - created
 jobs:
   CreateAdnPushUnixExecutable:
     name: CreateAdnPushUnixExecutable
