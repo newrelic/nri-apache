@@ -10,7 +10,6 @@ jobs:
       matrix:
         go: [ 1.13]
     runs-on: ubuntu-latest
-    container: golang:${{ matrix.go }}-stretch
     steps:
 
       - name: Set up Go 1.13
@@ -30,7 +29,7 @@ jobs:
           GOPATH: /home/runner/work/${{ github.event.repository.name }}/go
           GOBIN: /home/runner/work/${{ github.event.repository.name }}/go/bin
         run: |
-          IFS=- read nri INTEGRATION the_rest <<< \"${{ github.event.repository.name }}\"
+          echo ${{ github.event.repository.name }} | IFS=- read nri INTEGRATION the_rest
           export PATH=$PATH:$GOBIN
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential
           sudo gem install --no-document fpm
