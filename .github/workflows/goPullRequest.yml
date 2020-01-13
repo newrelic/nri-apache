@@ -1,0 +1,35 @@
+name: Go
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  BuildAndTestLinux:
+    name: BuildLinux
+    strategy:
+      matrix:
+        go: [ 1.13]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+        id: go
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+          path: go/src/github.com/gallo-cedrone/${{ github.event.repository.name }}
+      - name: Installing go-cov
+        run: go get github.com/jstemmer/go-junit-report github.com/axw/gocov/gocov/... github.com/AlekSi/gocov-xml
+      - name: Build and test
+        env:
+          GOPATH: /home/runner/work/${{ github.event.repository.name }}/go
+          GOBIN: /home/runner/work/${{ github.event.repository.name }}/go/bin
+        run: |
+          export PATH=$PATH:$GOBIN
+          make clean validate test

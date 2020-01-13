@@ -24,6 +24,7 @@ _testmain.go
 *.prof
 *.DS_STORE
 
+.idea/
 bin/
 coverage.xml
 target/
