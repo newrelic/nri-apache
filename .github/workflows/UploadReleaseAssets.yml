@@ -1,4 +1,4 @@
-name: Go
+name: UploadReleaseAssets
 on:
   push:
     tags:
@@ -6,7 +6,6 @@ on:
 jobs:
   CreateAdnPushUnixExecutable:
     name: CreateAdnPushUnixExecutable
-    needs: [CreateRelease]
     strategy:
       matrix:
         go: [ 1.13]
