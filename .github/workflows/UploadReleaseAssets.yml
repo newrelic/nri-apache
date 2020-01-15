@@ -75,6 +75,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./target/packages/tarball/${{ github.event.repository.name }}_linux_${{ github.event.release.target_commitish }}_${{ matrix.GOARCH }}.tar.gz
+          asset_path: ./target/packages/tarball/${{ github.event.repository.name }}_linux_${{ github.event.release.tag_name }}_${{ matrix.GOARCH }}.tar.gz
           asset_name: ${{ github.event.repository.name }}_linux_${{ github.event.release.tag_name }}_${{ matrix.GOARCH }}.tar.gz
           asset_content_type: tar
