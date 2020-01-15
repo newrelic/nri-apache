@@ -9,13 +9,13 @@ jobs:
     strategy:
       matrix:
         go: [ 1.13]
+        goarch: [ amd64 ]
     runs-on: ubuntu-latest
     steps:
-
-      - name: Set up Go 1.13
+      - name: Set up Go 
         uses: actions/setup-go@v1
         with:
-          go-version: 1.13
+          go-version: ${{ matrix.go }}
         id: go
       - name: Check out code into the Go module directory
         uses: actions/checkout@v1
@@ -31,6 +31,8 @@ jobs:
           echo ${{ github.event.repository.name }} | IFS=- read nri INTEGRATION the_rest
           export PATH=$PATH:$GOBIN
           export VERSION=${{ github.event.release.tag_name }}
+          export RELEASE=${{ github.event.release.target_commitish }}
+          export GOARCH=${{ matrix.goarch }}
           sudo apt-get install rpm ruby ruby-dev rubygems build-essential
           sudo gem install --no-document fpm
           make build
@@ -53,8 +55,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./target/packages/rpm/${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-dev.x86_64.rpm
-          asset_name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-dev.x86_64.rpm
+          asset_path: ./target/packages/rpm/${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-${{ github.event.release.target_commitish }}.x86_64.rpm
+          asset_name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-${{ github.event.release.target_commitish }}.x86_64.rpm
           asset_content_type: rpm
 
       - name: Upload Release Asset DEB
@@ -63,8 +65,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./target/packages/deb/${{ github.event.repository.name }}_${{ github.event.release.tag_name }}-dev_amd64.deb
-          asset_name: ${{ github.event.repository.name }}_${{ github.event.release.tag_name }}-dev_amd64.deb
+          asset_path: ./target/packages/deb/${{ github.event.repository.name }}_${{ github.event.release.tag_name }}-${{ github.event.release.target_commitish }}_${{ matrix.GOARCH }}.deb
+          asset_name: ${{ github.event.repository.name }}_${{ github.event.release.tag_name }}-${{ github.event.release.target_commitish }}_${{ matrix.GOARCH }}.deb
           asset_content_type: deb
 
       - name: Upload Release Asset
@@ -73,6 +75,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./target/packages/tarball/${{ github.event.repository.name }}_linux_${{ github.event.release.tag_name }}_amd64.tar.gz
-          asset_name: ${{ github.event.repository.name }}_linux_${{ github.event.release.tag_name }}_amd64.tar.gz
+          asset_path: ./target/packages/tarball/${{ github.event.repository.name }}_linux_${{ github.event.release.target_commitish }}_${{ matrix.GOARCH }}.tar.gz
+          asset_name: ${{ github.event.repository.name }}_linux_${{ github.event.release.target_commitish }}_${{ matrix.GOARCH }}.tar.gz
           asset_content_type: tar
