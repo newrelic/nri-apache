@@ -15,3 +15,4 @@
           # Use the discovered IP as the host address
           STATUS_URL: http://${discovery.ip}/server-status?auto
           METRICS: 1
+          REMOTE_MONITORING: true
