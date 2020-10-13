@@ -79,5 +79,7 @@ integration-test: test-deps
 
 # Include thematic Makefiles
 include Makefile-*.mk
+include $(CURDIR)/build/ci.mk
+include $(CURDIR)/build/release.mk
 
 .PHONY: all build clean validate-deps validate-only validate compile test-deps test-only test integration-test

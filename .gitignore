@@ -33,3 +33,7 @@ target/
 
 # Vim session
 Session.vim
+
+# CICD
+dist/
+*.gpg
