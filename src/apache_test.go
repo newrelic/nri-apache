@@ -32,7 +32,7 @@ func TestParseURL(t *testing.T) {
 	assert.Equal(t, "1234", port3)
 
 	_, _, err4 := parseStatusURL("://localhost/status")
-	assert.EqualError(t, err4, "parse ://localhost/status: missing protocol scheme")
+	assert.EqualError(t, err4, "parse \"://localhost/status\": missing protocol scheme")
 
 	_, _, err5 := parseStatusURL("localhost/status")
 	assert.EqualError(t, err5, "unsupported protocol scheme")
