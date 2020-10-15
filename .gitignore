@@ -23,7 +23,6 @@ _testmain.go
 *.test
 *.prof
 *.DS_STORE
-.idea
 
 bin/
 coverage.xml
@@ -37,4 +36,14 @@ Session.vim
 
 # CICD
 dist/
+
+
+# Local development tools/files
+.idea
+.env
+.envrc
 *.gpg
+
+# build files
+src/versioninfo.json
+src/resource.syso
