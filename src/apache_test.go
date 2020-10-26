@@ -38,7 +38,7 @@ func TestParseURL(t *testing.T) {
 
 	// error is different on windows and nix
 	assert.Error(t, err5)
-	assert.True(t, err5.Error() == "parse \"://localhost/status\": missing protocol scheme" || err5.Error() == "parse ://localhost/status: missing protocol scheme" )
+	assert.True(t, err5.Error() == "parse \"://localhost/status\": missing protocol scheme" || err5.Error() == "parse ://localhost/status: missing protocol scheme")
 }
 
 func TestEntityRemote(t *testing.T) {
