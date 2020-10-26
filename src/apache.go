@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"runtime"
+	"strings"
 	"time"
 
 	"github.com/newrelic/infra-integrations-sdk/data/metric"
@@ -22,11 +24,11 @@ type argumentList struct {
 	CABundleDir      string `default:"" help:"Alternative Certificate Authority bundle directory"`
 	RemoteMonitoring bool   `default:"false" help:"Identifies the monitored entity as 'remote'. In doubt: set to true."`
 	ValidateCerts    bool   `default:"true" help:"If the status URL is HTTPS with a self-signed certificate, set this to false if you want to avoid certificate validation"`
+	ShowVersion      bool   `default:"false" help:"Print build information and exit"`
 }
 
 const (
-	integrationName    = "com.newrelic.apache"
-	integrationVersion = "1.5.0"
+	integrationName = "com.newrelic.apache"
 
 	defaultHTTPTimeout = time.Second * 1
 
@@ -38,7 +40,12 @@ const (
 	httpsDefaultPort = `443`
 )
 
-var args argumentList
+var (
+	args               argumentList
+	integrationVersion = "0.0.0"
+	gitCommit          = ""
+	buildDate          = ""
+)
 
 func main() {
 	log.Debug("Starting Apache integration")
@@ -46,6 +53,18 @@ func main() {
 
 	i, err := createIntegration()
 	fatalIfErr(err)
+
+	if args.ShowVersion {
+		fmt.Printf(
+			"New Relic %s integration Version: %s, Platform: %s, GoVersion: %s, GitCommit: %s, BuildDate: %s\n",
+			strings.Title(strings.Replace(integrationName, "com.newrelic.", "", 1)),
+			integrationVersion,
+			fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH),
+			runtime.Version(),
+			gitCommit,
+			buildDate)
+		os.Exit(0)
+	}
 
 	log.SetupLogging(args.Verbose)
 
