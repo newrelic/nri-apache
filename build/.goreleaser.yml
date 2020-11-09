@@ -97,7 +97,7 @@ archives:
       - nri-win
     name_template: "{{ .ProjectName }}-{{ .Arch }}.{{ .Version }}_dirty"
     files:
-      - apache-win-config.yml.sample
+      - apache-config.yml.sample
       - apache-win-definition.yml
     format: zip
 

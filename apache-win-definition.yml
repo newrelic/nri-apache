@@ -1,17 +1,17 @@
 name: com.newrelic.apache
 description: Reports status and metrics for Apache server
 protocol_version: 3
-os: linux
+os: windows
 
 commands:
   metrics:
     command:
-      - ./bin/nri-apache
+      - .\bin\nri-apache.exe
       - --metrics
     interval: 15
   inventory:
     command:
-      - ./bin/nri-apache
+      - .\bin\nri-apache.exe
       - --inventory
     prefix: config/apache
     interval: 60
