@@ -31,11 +31,14 @@ func TestParseURL(t *testing.T) {
 	assert.Equal(t, "localhost", hostname3)
 	assert.Equal(t, "1234", port3)
 
-	_, _, err4 := parseStatusURL("://localhost/status")
-	assert.EqualError(t, err4, "parse ://localhost/status: missing protocol scheme")
+	_, _, err4 := parseStatusURL("localhost/status")
+	assert.EqualError(t, err4, "unsupported protocol scheme")
 
-	_, _, err5 := parseStatusURL("localhost/status")
-	assert.EqualError(t, err5, "unsupported protocol scheme")
+	_, _, err5 := parseStatusURL("://localhost/status")
+
+	// error is different on windows and nix
+	assert.Error(t, err5)
+	assert.True(t, err5.Error() == "parse \"://localhost/status\": missing protocol scheme" || err5.Error() == "parse ://localhost/status: missing protocol scheme")
 }
 
 func TestEntityRemote(t *testing.T) {
