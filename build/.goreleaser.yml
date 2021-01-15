@@ -45,13 +45,18 @@ nfpms:
     formats:
       - deb
     bindir: "/var/db/newrelic-infra/newrelic-integrations/bin"
-    files:
-      "apache-config.yml.sample": "/etc/newrelic-infra/integrations.d/apache-config.yml.sample"
-      "CHANGELOG.md": "/usr/share/doc/nri-apache/CHANGELOG.md"
-      "README.md":  "/usr/share/doc/nri-apache/README.md"
-      "LICENSE": "/usr/share/doc/nri-apache/LICENSE"
-    config_files:
-      "apache-definition.yml": "/var/db/newrelic-infra/newrelic-integrations/apache-definition.yml"
+    contents:
+      - src: apache-config.yml.sample
+        dst: /etc/newrelic-infra/integrations.d/apache-config.yml.sample
+      - src: CHANGELOG.md
+        dst: /usr/share/doc/nri-apache/CHANGELOG.md
+      - src: README.md
+        dst: /usr/share/doc/nri-apache/README.md
+      - src: LICENSE
+        dst: /usr/share/doc/nri-apache/LICENSE
+      - src: apache-definition.yml
+        dst: /var/db/newrelic-infra/newrelic-integrations/apache-definition.yml
+        type: config
     dependencies:
       - "newrelic-infra"
 
@@ -68,13 +73,18 @@ nfpms:
     formats:
       - rpm
     bindir: "/var/db/newrelic-infra/newrelic-integrations/bin"
-    files:
-      "apache-config.yml.sample": "/etc/newrelic-infra/integrations.d/apache-config.yml.sample"
-      "CHANGELOG.md": "/usr/share/doc/nri-apache/CHANGELOG.md"
-      "README.md":  "/usr/share/doc/nri-apache/README.md"
-      "LICENSE": "/usr/share/doc/nri-apache/LICENSE"
-    config_files:
-      "apache-definition.yml": "/var/db/newrelic-infra/newrelic-integrations/apache-definition.yml"
+    contents:
+      - src: apache-config.yml.sample
+        dst: /etc/newrelic-infra/integrations.d/apache-config.yml.sample
+      - src: CHANGELOG.md
+        dst: /usr/share/doc/nri-apache/CHANGELOG.md
+      - src: README.md
+        dst: /usr/share/doc/nri-apache/README.md
+      - src: LICENSE
+        dst: /usr/share/doc/nri-apache/LICENSE
+      - src: apache-definition.yml
+        dst: /var/db/newrelic-infra/newrelic-integrations/apache-definition.yml
+        type: config
     dependencies:
       - "newrelic-infra"
     overrides:
