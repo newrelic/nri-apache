@@ -13,7 +13,7 @@ jobs:
         wget https://github.com/newrelic/nri-apache/releases/download/v0.0.1/nri-apache_0.0.1-1_amd64.deb -O ./dist/nri-apache_0.0.1-1_amd64.deb
 
     - name: Test packages installation
-      uses: paologallinaharbur/test-packages-action@v1.0.4
+      uses: paologallinaharbur/test-packages-action@v1.0.5
       with:
         TAG: '0.0.1'
         INTEGRATION: 'nri-apache'
