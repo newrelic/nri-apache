@@ -2,11 +2,12 @@ package main
 
 import (
 	"bufio"
-	"github.com/newrelic/infra-integrations-sdk/data/metric"
-	"github.com/newrelic/infra-integrations-sdk/integration"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/newrelic/infra-integrations-sdk/data/metric"
+	"github.com/newrelic/infra-integrations-sdk/integration"
 )
 
 var testApacheStatus = `Total Accesses: 66
@@ -289,6 +290,12 @@ func TestPopulateMetrics(t *testing.T) {
 
 	if metricsSet["server.scoreboard.startingWorkers"] != float64(2) {
 		t.Errorf("server.scoreboard.startingWorkers = %f. Expected 2", metricsSet["server.scoreboard.startingWorkers"])
+	}
+	if metricsSet["server.scoreboard.open"] != float64(39) {
+		t.Errorf("server.scoreboard.open = %f. Expected 39", metricsSet["server.scoreboard.open"])
+	}
+	if metricsSet["server.scoreboard.waiting"] != float64(8) {
+		t.Errorf("server.scoreboard.waiting = %f. Expected 8", metricsSet["server.scoreboard.open"])
 	}
 }
 

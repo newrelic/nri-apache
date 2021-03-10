@@ -32,6 +32,8 @@ var metricsDefinition = map[string][]interface{}{
 	"server.scoreboard.dnsLookupWorkers":   {getWorkerStatus("D"), metric.GAUGE},
 	"server.scoreboard.idleCleanupWorkers": {getWorkerStatus("I"), metric.GAUGE},
 	"server.scoreboard.startingWorkers":    {getWorkerStatus("S"), metric.GAUGE},
+	"server.scoreboard.open":               {getWorkerStatus("."), metric.GUAGE},
+	"server.scoreboard.waiting":            {getWorkerStatus("_"), metric.GUAGE},
 	"server.scoreboard.totalWorkers":       {getTotalWorkers, metric.GAUGE},
 }
 
