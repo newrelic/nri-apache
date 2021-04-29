@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Next
+## Changed
+- Update Go to v1.16.
+- Migrate to Go Modules
+- Update Infrastracture SDK to v3.6.7.
+- Update other dependecies.
+
 ## 1.5.1 (2020-06-16)
 ## Fixed
 - Updated the configuration sample to include the status_url for inventory required

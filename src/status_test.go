@@ -98,9 +98,19 @@ func TestNewClient(t *testing.T) {
 		t.Error()
 	}
 
-	ca1.WriteString(firstCA)
-	ca2.WriteString(anotherCA)
-	ca3.WriteString(yetAnotherCA)
+	_, err = ca1.WriteString(firstCA)
+	if err != nil {
+		t.Error()
+	}
+	_, err = ca2.WriteString(anotherCA)
+	if err != nil {
+		t.Error()
+	}
+
+	_, err = ca3.WriteString(yetAnotherCA)
+	if err != nil {
+		t.Error()
+	}
 
 	c := Status{
 		CABundleFile:  ca1.Name(),

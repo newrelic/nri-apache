@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/newrelic/infra-integrations-sdk/data/attribute"
 	"net/url"
 	"os"
 	"runtime"
@@ -112,14 +113,14 @@ func metricSet(e *integration.Entity, eventType, hostname, port string, remote b
 	if remote {
 		return e.NewMetricSet(
 			eventType,
-			metric.Attr("hostname", hostname),
-			metric.Attr("port", port),
+			attribute.Attr("hostname", hostname),
+			attribute.Attr("port", port),
 		)
 	}
 
 	return e.NewMetricSet(
 		eventType,
-		metric.Attr("port", port),
+		attribute.Attr("port", port),
 	)
 }
 
