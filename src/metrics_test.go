@@ -81,7 +81,7 @@ func TestGetMetricsInvalidData(t *testing.T) {
 func TestGetMetricsEmptyData(t *testing.T) {
 	rawMetrics, err := getRawMetrics(bufio.NewReader(strings.NewReader(testApacheStatusEmpty)))
 
-	if !reflect.DeepEqual(err.Error(), "Empty result") {
+	if !reflect.DeepEqual(err.Error(), "empty result") {
 		t.Error()
 	}
 	if len(rawMetrics) != 0 {
