@@ -1,1 +1,21 @@
-golang: {}
+golang:
+  github.com/newrelic/infra-integrations-sdk:
+    license: Apache-2.0
+    license_url: vendor/github.com/newrelic/infra-integrations-sdk/LICENSE
+    project_url: github.com/newrelic/infra-integrations-sdk
+  github.com/pkg/errors:
+    license: BSD-2-Clause
+    license_url: vendor/github.com/pkg/errors/LICENSE
+    project_url: github.com/pkg/errors
+  github.com/xeipuuv/gojsonpointer:
+    license: Apache-2.0
+    license_url: vendor/github.com/xeipuuv/gojsonpointer/LICENSE-APACHE-2.0.txt
+    project_url: github.com/xeipuuv/gojsonpointer
+  github.com/xeipuuv/gojsonreference:
+    license: Apache-2.0
+    license_url: vendor/github.com/xeipuuv/gojsonreference/LICENSE-APACHE-2.0.txt
+    project_url: github.com/xeipuuv/gojsonreference
+  github.com/xeipuuv/gojsonschema:
+    license: Apache-2.0
+    license_url: vendor/github.com/xeipuuv/gojsonschema/LICENSE-APACHE-2.0.txt
+    project_url: github.com/xeipuuv/gojsonschema
