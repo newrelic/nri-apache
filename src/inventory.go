@@ -20,7 +20,7 @@ func getBinPath() (string, error) {
 		binPath = "/usr/sbin/apache2ctl"
 		_, derr := os.Stat(binPath)
 		if derr != nil {
-			return "", fmt.Errorf("It isn't possible to locate Apache executable")
+			return "", fmt.Errorf("it isn't possible to locate Apache executable")
 		}
 	}
 	return binPath, nil
@@ -37,7 +37,7 @@ func setInventory(inventory *inventory.Inventory) error {
 	cmd := exec.Command(commandPath, "-M")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("Error fetching the inventory (modules). Message: %v", err.Error())
+		return fmt.Errorf("error fetching the inventory (modules). Message: %v", err.Error())
 	}
 	r := bytes.NewReader(output)
 	err = getModules(bufio.NewReader(r), inventory)
@@ -48,7 +48,7 @@ func setInventory(inventory *inventory.Inventory) error {
 	cmd = exec.Command(commandPath, "-V")
 	output, err = cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("Error fetching the inventory (version). Message: %v", err.Error())
+		return fmt.Errorf("error fetching the inventory (version). Message: %v", err.Error())
 	}
 	r = bytes.NewReader(output)
 	err = getVersion(bufio.NewReader(r), inventory)
@@ -57,7 +57,7 @@ func setInventory(inventory *inventory.Inventory) error {
 	}
 
 	if len(inventory.Items()) == 0 {
-		return fmt.Errorf("Empty result")
+		return fmt.Errorf("empty result")
 	}
 	return nil
 }
@@ -80,7 +80,10 @@ func getModules(reader *bufio.Reader, i *inventory.Inventory) error {
 			splitedLine := strings.Split(line, "_module")
 			moduleName := strings.TrimSpace(splitedLine[0])
 			key := fmt.Sprintf("modules/%s", moduleName)
-			i.SetItem(key, "value", "enabled")
+			err = i.SetItem(key, "value", "enabled")
+			if err != nil {
+				return err
+			}
 		}
 	}
 
@@ -102,7 +105,10 @@ func getVersion(reader *bufio.Reader, i *inventory.Inventory) error {
 
 		if strings.Contains(line, "Server version") {
 			splitedLine := strings.Split(line, ":")
-			i.SetItem("version", "value", strings.TrimSpace(splitedLine[1]))
+			err = i.SetItem("version", "value", strings.TrimSpace(splitedLine[1]))
+			if err != nil {
+				return err
+			}
 			break
 		}
 	}

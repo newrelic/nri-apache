@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"github.com/newrelic/infra-integrations-sdk/data/metric"
+	"github.com/newrelic/infra-integrations-sdk/data/attribute"
 	"github.com/newrelic/infra-integrations-sdk/integration"
 	"reflect"
 	"strings"
@@ -81,7 +81,7 @@ func TestGetMetricsInvalidData(t *testing.T) {
 func TestGetMetricsEmptyData(t *testing.T) {
 	rawMetrics, err := getRawMetrics(bufio.NewReader(strings.NewReader(testApacheStatusEmpty)))
 
-	if !reflect.DeepEqual(err.Error(), "Empty result") {
+	if !reflect.DeepEqual(err.Error(), "empty result") {
 		t.Error()
 	}
 	if len(rawMetrics) != 0 {
@@ -224,8 +224,8 @@ func TestPopulateMetrics(t *testing.T) {
 		e, _ = integration.Entity(integrationName, "localhost")
 	}
 	// When the system populates the metrics from the Apache Status
-	hostnameAttr := metric.Attr("hostname", "localhost")
-	portAttr := metric.Attr("port", "80")
+	hostnameAttr := attribute.Attr("hostname", "localhost")
+	portAttr := attribute.Attr("port", "80")
 	populatedMetrics := e.NewMetricSet("ApacheSample", hostnameAttr, portAttr)
 	err := populateMetrics(populatedMetrics, rawMetrics, metricsDefinition)
 

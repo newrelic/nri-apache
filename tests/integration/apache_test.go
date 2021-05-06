@@ -67,9 +67,7 @@ func runIntegration(t *testing.T, envVars ...string) (string, string, error) {
 }
 
 func TestApacheIntegration(t *testing.T) {
-	testName := helpers.GetTestName(t)
-
-	stdout, stderr, err := runIntegration(t, fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", testName))
+	stdout, stderr, err := runIntegration(t, fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", t.Name()))
 
 	assert.NoError(t, err, "Unexpected error")
 	assert.NotNil(t, stderr, "unexpected stderr")
@@ -81,9 +79,7 @@ func TestApacheIntegration(t *testing.T) {
 }
 
 func TestApacheIntegrationInvalidStatusURL(t *testing.T) {
-	testName := helpers.GetTestName(t)
-
-	stdout, stderr, err := runIntegration(t, "STATUS_URL=invalidurl", fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", testName))
+	stdout, stderr, err := runIntegration(t, "STATUS_URL=invalidurl", fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", t.Name()))
 
 	expectedErrorMessage := "unsupported protocol scheme"
 
@@ -96,9 +92,7 @@ func TestApacheIntegrationInvalidStatusURL(t *testing.T) {
 }
 
 func TestApacheIntegrationOnlyMetrics(t *testing.T) {
-	testName := helpers.GetTestName(t)
-
-	stdout, stderr, err := runIntegration(t, "METRICS=true", fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", testName))
+	stdout, stderr, err := runIntegration(t, "METRICS=true", fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", t.Name()))
 
 	assert.NoError(t, err, "There is an error executing the Apache Integration binary")
 	assert.NotNil(t, stderr, "unexpected stderr")
@@ -110,9 +104,7 @@ func TestApacheIntegrationOnlyMetrics(t *testing.T) {
 }
 
 func TestApacheIntegrationOnlyInventory(t *testing.T) {
-	testName := helpers.GetTestName(t)
-
-	stdout, stderr, err := runIntegration(t, "INVENTORY=true", fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", testName))
+	stdout, stderr, err := runIntegration(t, "INVENTORY=true", fmt.Sprintf("NRIA_CACHE_PATH=/tmp/%v.json", t.Name()))
 
 	assert.NoError(t, err, "There is an error executing the Apache Integration binary")
 

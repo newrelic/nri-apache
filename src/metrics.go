@@ -123,7 +123,7 @@ func getRawMetrics(reader *bufio.Reader) (map[string]interface{}, error) {
 
 	_, err := reader.Peek(1)
 	if err != nil {
-		return nil, fmt.Errorf("Empty result")
+		return nil, fmt.Errorf("empty result")
 	}
 
 	for {
@@ -154,9 +154,13 @@ func getMetricsData(status *Status, sample *metric.Set) error {
 	log.Debug("retrieving Apache Status from %s", args.StatusURL)
 	resp, err := netClient.Get(args.StatusURL)
 	if err != nil {
-		log.Fatal(fmt.Errorf("Error trying to connect to '%s'. Got error: %v", args.StatusURL, err.Error()))
+		log.Fatal(fmt.Errorf("error trying to connect to '%s'. Got error: %v", args.StatusURL, err.Error()))
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Warn(fmt.Sprintf("error closing response body: %v", err))
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("server returned code %d (%s). Expecting 200", resp.StatusCode, resp.Status)
