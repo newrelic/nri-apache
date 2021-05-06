@@ -5,13 +5,13 @@ import (
 	"github.com/newrelic/infra-integrations-sdk/log"
 	"os/exec"
 	"strings"
+	"testing"
 )
 
 // GetTestName returns the name of the running test.
-//func GetTestName(t *testing.T) interface{} {
-//	v := reflect.ValueOf(*t)
-//	return v.FieldByName("name")
-//}
+func GetTestName(t *testing.T) interface{} {
+	return t.Name()
+}
 
 // ExecInContainer executes the given command inside the specified container. It returns three values:
 // 1st - Standard Output
