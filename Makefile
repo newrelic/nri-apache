@@ -8,8 +8,6 @@ CONFIG_DIR       = /etc/newrelic-infra/integrations.d
 GO_FILES     	 := ./src/
 GOFLAGS			 = -mod=mod
 GOLANGCI_LINT	 = github.com/golangci/golangci-lint/cmd/golangci-lint
-GOCOV      		 = github.com/axw/gocov/gocov
-GOCOV_XML		 = github.com/AlekSi/gocov-xml
 
 all: build
 
@@ -20,12 +18,10 @@ clean:
 	@rm -rfv bin coverage.xml
 
 validate:
-ifeq ($(strip $(GO_FILES)),)
-	@echo "=== $(INTEGRATION) === [ validate ]: no Go files found. Skipping validation."
-else
-	@printf "=== $(INTEGRATION) === [ validate ]: running golangci-lint... "
-	@go run $(GOFLAGS) $(GOLANGCI_LINT) run --verbose
-endif
+	@printf "=== $(INTEGRATION) === [ validate ]: running golangci-lint & semgrep... "
+	@go run  $(GOFLAGS) $(GOLANGCI_LINT) run --verbose
+	@[ -f .semgrep.yml ] && semgrep_config=".semgrep.yml" || semgrep_config="p/golang" ; \
+	docker run --rm -v "${PWD}:/src:ro" --workdir /src returntocorp/semgrep -c "$$semgrep_config"
 
 bin/$(BINARY_NAME):
 	@echo "=== $(INTEGRATION) === [ compile ]: building $(BINARY_NAME)..."
@@ -35,7 +31,7 @@ compile: bin/$(BINARY_NAME)
 
 test:
 	@echo "=== $(INTEGRATION) === [ test ]: running unit tests..."
-	@go run $(GOFLAGS) $(GOCOV) test ./... | go run $(GOFLAGS) $(GOCOV_XML) > coverage.xml
+	@go test -race ./... -count=1
 
 integration-test:
 	@echo "=== $(INTEGRATION) === [ test ]: running integration tests..."
