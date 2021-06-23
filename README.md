@@ -14,7 +14,7 @@ For installation and usage instructions, see our [documentation web site](https:
 
 ## Building
 
-Golang is required to build the integration. We recommend Golang 1.16 or higher.
+Golang is required to build the integration. We recommend Golang 1.16 or higher. 
 
 After cloning this repository, go to the directory of the Apache integration and build it:
 
