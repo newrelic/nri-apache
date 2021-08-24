@@ -77,7 +77,7 @@ archives:
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Version }}_{{ .Arch }}_dirty"
     files:
       - apache-config.yml.sample
-      - src: 'legacyapache-definition.yml'
+      - src: 'legacy/apache-definition.yml'
         dst: .
         strip_parent: true
     format: tar.gz
@@ -88,7 +88,7 @@ archives:
     name_template: "{{ .ProjectName }}-{{ .Arch }}.{{ .Version }}_dirty"
     files:
       - apache-config.yml.sample
-      - src: 'legacyapache-win-definition.yml'
+      - src: 'legacy/apache-win-definition.yml'
         dst: .
         strip_parent: true
     format: zip
