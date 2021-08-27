@@ -1,5 +1,5 @@
 name: com.newrelic.apache
-description: Reports status and metrics for Apache server. Legacy file kept for compatibility.
+description: Reports status and metrics for Apache server
 protocol_version: 3
 os: windows
 

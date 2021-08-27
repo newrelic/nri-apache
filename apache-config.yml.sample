@@ -5,6 +5,12 @@ integrations:
     # status_url is used to identify the monitored entity to which the inventory will be attached.
     STATUS_URL: http://127.0.0.1/server-status?auto
 
+    # Alternative Certificate Authority bundle directory and file
+    # CA_BUNDLE_DIR: ""
+    # CA_BUNDLE_FILE: ""
+    # Set this to false if you want to avoid certificate validation
+    # VALIDATE_CERTS: true
+
     # New users should leave this property as `true`, to identify the
     # monitored entities as `remote`. Setting this property to `false` (the
     # default value) is deprecated and will be removed soon, disallowing
@@ -24,6 +30,12 @@ integrations:
     # status_url is used to identify the monitored entity to which the inventory will be attached.
     STATUS_URL: http://127.0.0.1/server-status?auto
     
+    # Alternative Certificate Authority bundle directory and file
+    # CA_BUNDLE_DIR: ""
+    # CA_BUNDLE_FILE: ""
+    # Set this to false if you want to avoid certificate validation
+    # VALIDATE_CERTS: true
+
     # New users should leave this property as `true`, to identify the
     # monitored entities as `remote`. Setting this property to `false` (the
     # default value) is deprecated and will be removed soon, disallowing
