@@ -1,37 +1,52 @@
-integration_name: com.newrelic.apache
+integrations:
+- name: nri-apache
+  env:
+    METRICS: "true"
+    # status_url is used to identify the monitored entity to which the inventory will be attached.
+    STATUS_URL: http://127.0.0.1/server-status?auto
 
-instances:
-    - name: apache-server-metrics
-      command: metrics
-      arguments:
-          status_url: http://127.0.0.1/server-status?auto
+    # Alternative Certificate Authority bundle directory and file
+    # CA_BUNDLE_DIR: ""
+    # CA_BUNDLE_FILE: ""
+    # Set this to false if you want to avoid certificate validation
+    # VALIDATE_CERTS: true
 
-          # New users should leave this property as `true`, to identify the
-          # monitored entities as `remote`. Setting this property to `false` (the
-          # default value) is deprecated and will be removed soon, disallowing
-          # entities that are identified as `local`.
-          # Please check the documentation to get more information about local
-          # versus remote entities:
-          # https://github.com/newrelic/infra-integrations-sdk/blob/master/docs/entity-definition.md
-          remote_monitoring: true
-      labels:
-          env: production
-          role: load_balancer
-    - name: apache-server-inventory
-      command: inventory
-      arguments:
+    # New users should leave this property as `true`, to identify the
+    # monitored entities as `remote`. Setting this property to `false` (the
+    # default value) is deprecated and will be removed soon, disallowing
+    # entities that are identified as `local`.
+    # Please check the documentation to get more information about local
+    # versus remote entities:
+    # https://github.com/newrelic/infra-integrations-sdk/blob/master/docs/entity-definition.md
+    REMOTE_MONITORING: true
+  interval: 15s
+  labels:
+    env: production
+    role: load_balancer
 
-          # New users should leave this property as `true`, to identify the
-          # monitored entities as `remote`. Setting this property to `false` (the
-          # default value) is deprecated and will be removed soon, disallowing
-          # entities that are identified as `local`.
-          # Please check the documentation to get more information about local
-          # versus remote entities:
-          # https://github.com/newrelic/infra-integrations-sdk/blob/master/docs/entity-definition.md
-          remote_monitoring: true
+- name: nri-apache
+  env:
+    INVENTORY: "true"
+    # status_url is used to identify the monitored entity to which the inventory will be attached.
+    STATUS_URL: http://127.0.0.1/server-status?auto
+    
+    # Alternative Certificate Authority bundle directory and file
+    # CA_BUNDLE_DIR: ""
+    # CA_BUNDLE_FILE: ""
+    # Set this to false if you want to avoid certificate validation
+    # VALIDATE_CERTS: true
 
-          # status_url is used to identify the monitored entity to which the inventory will be attached.
-          status_url: http://127.0.0.1/server-status?auto
-      labels:
-          env: production
-          role: load_balancer
+    # New users should leave this property as `true`, to identify the
+    # monitored entities as `remote`. Setting this property to `false` (the
+    # default value) is deprecated and will be removed soon, disallowing
+    # entities that are identified as `local`.
+    # Please check the documentation to get more information about local
+    # versus remote entities:
+    # https://github.com/newrelic/infra-integrations-sdk/blob/master/docs/entity-definition.md
+    REMOTE_MONITORING: true
+  interval: 60s
+  labels:
+    env: production
+    role: load_balancer
+  inventory_source: config/apache
+
