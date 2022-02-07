@@ -29,6 +29,10 @@ integrations:
     INVENTORY: "true"
     # status_url is used to identify the monitored entity to which the inventory will be attached.
     STATUS_URL: http://127.0.0.1/server-status?auto
+
+    # binary_path is used to specify the path of the apache binary file (i.e. "C:\Apache\bin\httpd.exe").
+    # By default the integration automatically discovers the binary on "/usr/sbin/httpd" or "/usr/sbin/apache2ctl". Use this setting for any other location.
+    # BINARY_PATH: ""
     
     # Alternative Certificate Authority bundle directory and file
     # CA_BUNDLE_DIR: ""

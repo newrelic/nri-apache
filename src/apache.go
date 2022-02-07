@@ -22,6 +22,7 @@ import (
 type argumentList struct {
 	sdkArgs.DefaultArgumentList
 	StatusURL        string `default:"http://127.0.0.1/server-status?auto" help:"Apache status-server URL."`
+	BinaryPath       string `default:"" help:"Set location of the Apache binary"`
 	CABundleFile     string `default:"" help:"Alternative Certificate Authority bundle file"`
 	CABundleDir      string `default:"" help:"Alternative Certificate Authority bundle directory"`
 	RemoteMonitoring bool   `default:"false" help:"Identifies the monitored entity as 'remote'. In doubt: set to true."`
@@ -75,7 +76,7 @@ func main() {
 
 	if args.HasInventory() {
 		log.Debug("Fetching data for '%s' integration", integrationName+"-inventory")
-		fatalIfErr(setInventory(e.Inventory))
+		fatalIfErr(setInventory(e.Inventory, args.BinaryPath))
 	}
 
 	if args.HasMetrics() {

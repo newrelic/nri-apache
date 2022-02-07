@@ -11,16 +11,24 @@ import (
 	"strings"
 )
 
-func getBinPath() (string, error) {
-	// Check first for RedHat
-	binPath := "/usr/sbin/httpd"
-	_, err := os.Stat(binPath)
-	if err != nil {
-		// If it isn't a RedHat, try with Debian
-		binPath = "/usr/sbin/apache2ctl"
-		_, derr := os.Stat(binPath)
-		if derr != nil {
-			return "", fmt.Errorf("it isn't possible to locate Apache executable")
+func getBinPath(binPath string) (string, error) {
+	// Check if path sent through config is valid
+	if binPath != "" {
+		_, err := os.Stat(binPath)
+		if err != nil {
+			return "", fmt.Errorf("it isn't possible to locate Apache executable on the provided Binary_Path config setting")
+		}
+	} else {
+		// Check first for RedHat
+		binPath := "/usr/sbin/httpd"
+		_, err := os.Stat(binPath)
+		if err != nil {
+			// If it isn't a RedHat, try with Debian
+			binPath = "/usr/sbin/apache2ctl"
+			_, derr := os.Stat(binPath)
+			if derr != nil {
+				return "", fmt.Errorf("it isn't possible to locate Apache executable. Try using Binary-Path setting")
+			}
 		}
 	}
 	return binPath, nil
@@ -28,8 +36,8 @@ func getBinPath() (string, error) {
 
 // setInventory executes system command in order to retrieve required inventory data and calls functions which parse the result.
 // It returns a map of inventory data
-func setInventory(inventory *inventory.Inventory) error {
-	commandPath, err := getBinPath()
+func setInventory(inventory *inventory.Inventory, configBinaryPath string) error {
+	commandPath, err := getBinPath(configBinaryPath)
 	if err != nil {
 		return err
 	}
