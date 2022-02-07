@@ -3,35 +3,33 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"errors"
 	"fmt"
 	"github.com/newrelic/infra-integrations-sdk/data/inventory"
+	"github.com/newrelic/infra-integrations-sdk/log"
 	"io"
 	"os"
 	"os/exec"
 	"strings"
 )
 
+var errBinaryNotFound = errors.New("could not find apache binary")
+
 func getBinPath(binPath string) (string, error) {
-	// Check if path sent through config is valid
+	var paths []string
 	if binPath != "" {
-		_, err := os.Stat(binPath)
-		if err != nil {
-			return "", fmt.Errorf("it isn't possible to locate Apache executable on the provided Binary_Path config setting")
-		}
-	} else {
-		// Check first for RedHat
-		binPath := "/usr/sbin/httpd"
-		_, err := os.Stat(binPath)
-		if err != nil {
-			// If it isn't a RedHat, try with Debian
-			binPath = "/usr/sbin/apache2ctl"
-			_, derr := os.Stat(binPath)
-			if derr != nil {
-				return "", fmt.Errorf("it isn't possible to locate Apache executable. Try using Binary-Path setting")
-			}
-		}
+		paths = append(paths, binPath)
 	}
-	return binPath, nil
+	paths = append(paths, "/usr/sbin/httpd", "/usr/sbin/apache2ctl")
+	for _, path := range paths {
+		_, err := os.Stat(path)
+		if err == nil {
+			return path, nil
+		}
+		log.Debug("Probing for apache binary at %q failed: %v", path, err)
+	}
+
+	return "", errBinaryNotFound
 }
 
 // setInventory executes system command in order to retrieve required inventory data and calls functions which parse the result.
