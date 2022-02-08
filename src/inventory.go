@@ -24,11 +24,11 @@ func getBinPath(binPath string) (string, error) {
 	for _, path := range paths {
 		_, err := os.Stat(path)
 		if err == nil {
+			log.Debug("Using apache binary %q", path)
 			return path, nil
 		}
 		log.Debug("Probing for apache binary at %q failed: %v", path, err)
 	}
-
 	return "", errBinaryNotFound
 }
 
