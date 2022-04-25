@@ -49,6 +49,8 @@ nfpms:
     contents:
       - src: "apache-config.yml.sample"
         dst: "/etc/newrelic-infra/integrations.d/apache-config.yml.sample"
+      - src: "apache-log.yml.example"
+        dst: "/etc/newrelic-infra/logging.d/apache-log.yml.example"
       - src: "CHANGELOG.md"
         dst: "/usr/share/doc/nri-apache/CHANGELOG.md"
       - src: "README.md"
