@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.9.1 (2022-06-27)
+### Added
+ - Added support for more distributions:
+    RHEL(EL) 9
+    Ubuntu 22.04
+
 ## 1.9.0 (2022-04-27)
 ### Added
 - Log config examples files.
