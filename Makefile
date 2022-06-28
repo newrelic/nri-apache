@@ -41,4 +41,4 @@ install: compile
 include $(CURDIR)/build/ci.mk
 include $(CURDIR)/build/release.mk
 
-.PHONY: all build clean validate compile test integration-test install
+.PHONY: all build clean compile test integration-test install
