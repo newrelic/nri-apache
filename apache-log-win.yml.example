@@ -1,0 +1,22 @@
+###############################################################################
+# Log forwarder configuration for Windows Apache Server logs                  #
+# NOTE: Apache installations can vary.  Use the appropriate file:             #
+#       log location that matches your environment / installation             #
+# Source: file                                                                #
+# Available customization parameters: attributes, max_line_kb, pattern        #
+###############################################################################
+
+logs:
+  - name: apache_access
+    file: C:\Apache*\logs\access.log
+#   file: C:\<install_path>\logs\access.log
+#   file: C:\<install_path>\logs\access_log.log
+    attributes:
+      logtype: apache
+
+  - name: apache_error
+    file: C:\Apache*\logs\error.log
+#   file: C:\<install_path>\logs\error.log
+#   file: C:\<install_path>\logs\error_log.log
+    attributes:
+      logtype: apache_error

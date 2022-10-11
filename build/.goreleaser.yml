@@ -79,6 +79,7 @@ archives:
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Version }}_{{ .Arch }}_dirty"
     files:
       - apache-config.yml.sample
+      - apache-log-win.yml.example
       - src: 'legacy/apache-definition.yml'
         dst: .
         strip_parent: true
