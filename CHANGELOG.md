@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.10.0  (2023-03-08)
+### Changed
+- Upgrade Go to 1.19 and bump dependencies
+
 ## 1.9.1 (2022-06-27)
 ### Added
  - Added support for more distributions:
