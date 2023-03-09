@@ -1,6 +1,6 @@
 module github.com/newrelic/nri-apache
 
-go 1.18
+go 1.19
 
 require (
 	github.com/newrelic/infra-integrations-sdk v3.7.3+incompatible
