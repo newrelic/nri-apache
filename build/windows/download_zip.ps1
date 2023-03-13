@@ -5,7 +5,7 @@ param (
     [string]$REPO_FULL_NAME="none"
 )
 write-host "===> Creating dist folder"
-New-Item -ItemType directory -Path .\dist
+New-Item -ItemType directory -Path .\dist -Force
 
 $VERSION=${TAG}.substring(1)
 $zip_name="nri-${INTEGRATION}-${ARCH}.${VERSION}.zip"
