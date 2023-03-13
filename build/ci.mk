@@ -66,14 +66,13 @@ endif
 .PHONY : ci/fake-prerelease
 ci/fake-prerelease: ci/deps
 ifdef TAG
-	@docker run --platform linux/amd64 --rm -t \
+	@docker run --rm -t \
 			--name "nri-$(INTEGRATION)-prerelease" \
 			-v $(CURDIR):/go/src/github.com/newrelic/nri-$(INTEGRATION) \
 			-w /go/src/github.com/newrelic/nri-$(INTEGRATION) \
 			-e INTEGRATION \
 			-e PRERELEASE=true \
 			-e NO_PUBLISH=true \
-			-e NO_SIGN=true \
 			-e GITHUB_TOKEN \
 			-e REPO_FULL_NAME \
 			-e TAG \

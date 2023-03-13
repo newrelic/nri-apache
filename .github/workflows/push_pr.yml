@@ -11,7 +11,7 @@ env:
   INTEGRATION: "apache"
   ORIGINAL_REPO_NAME: "newrelic/nri-apache"
   REPO_FULL_NAME: ${{ github.event.repository.full_name }}
-  TAG: "v0.0.0" # needed for goreleaser windows builds
+  TAG: "v1.2.3" # needed for fake-prereleases
 
 jobs:
   static-analysis:
@@ -88,7 +88,6 @@ jobs:
       GPG_MAIL: 'infrastructure-eng@newrelic.com'
       GPG_PASSPHRASE: ${{ secrets.OHAI_GPG_PASSPHRASE }}
       GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }} # base64 encoded
-      TAG: v1.2.3
     steps:
       - uses: actions/checkout@v3
       - run: git tag "$TAG"
@@ -109,7 +108,6 @@ jobs:
       PFX_CERTIFICATE_BASE64: ${{ secrets.OHAI_PFX_CERTIFICATE_BASE64 }} # base64 encoded
       PFX_CERTIFICATE_DESCRIPTION: 'New Relic'
       PFX_PASSPHRASE:  ${{ secrets.OHAI_PFX_PASSPHRASE }}
-      TAG: v1.2.3
     defaults:
       run:
         working-directory: src/github.com/${{ env.ORIGINAL_REPO_NAME }}
@@ -125,16 +123,10 @@ jobs:
         run: git tag "$TAG"
 
       - name: Download artifact from previous job
-        if: needs.docker-build.result != 'skipped'
         uses: actions/download-artifact@v3
         with:
           name: windows-packages
           path: src/github.com/${{ env.ORIGINAL_REPO_NAME }}/dist/
-
-      - shell: cmd
-        run: |
-          dir D:\a\nri-apache\nri-apache\src\github.com\newrelic\nri-apache\
-          dir D:\a\nri-apache\nri-apache\src\github.com\newrelic\nri-apache\dist
 
       - name: Get PFX certificate from GH secrets
         shell: bash
