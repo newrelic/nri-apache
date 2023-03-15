@@ -79,7 +79,7 @@ archives:
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Version }}_{{ .Arch }}_dirty"
     files:
       - apache-config.yml.sample
-      - apache-log-win.yml.example
+      - apache-log.yml.example
       - src: 'legacy/apache-definition.yml'
         dst: .
         strip_parent: true
@@ -91,6 +91,7 @@ archives:
     name_template: "{{ .ProjectName }}-{{ .Arch }}.{{ .Version }}_dirty"
     files:
       - apache-config.yml.sample
+      - apache-log-win.yml.example
       - src: 'legacy/apache-win-definition.yml'
         dst: .
         strip_parent: true
