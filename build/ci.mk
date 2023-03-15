@@ -73,6 +73,7 @@ ifdef TAG
 			-e INTEGRATION \
 			-e PRERELEASE=true \
 			-e NO_PUBLISH=true \
+			-e NO_SIGN \
 			-e GITHUB_TOKEN \
 			-e REPO_FULL_NAME \
 			-e TAG \

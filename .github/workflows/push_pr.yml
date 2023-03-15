@@ -6,12 +6,13 @@ on:
       - main
       - master
   pull_request:
+  workflow_dispatch:
 
 env:
   INTEGRATION: "apache"
   ORIGINAL_REPO_NAME: "newrelic/nri-apache"
   REPO_FULL_NAME: ${{ github.event.repository.full_name }}
-  TAG: "v1.2.3" # needed for fake-prereleases
+  TAG: "v0.0.0" # needed for fake-prereleases
 
 jobs:
   static-analysis:
@@ -57,7 +58,7 @@ jobs:
           go-version-file: "src/github.com/${{ env.ORIGINAL_REPO_NAME }}/go.mod"
       - name: Running unit tests
         shell: pwsh
-        run: .\build\windows\unit_tests.ps1
+        run: build\windows\unit_tests.ps1
 
   # can't run this step inside of container because of tests specific
   test-integration-nix:
@@ -90,7 +91,12 @@ jobs:
       GPG_PRIVATE_KEY_BASE64: ${{ secrets.OHAI_GPG_PRIVATE_KEY_BASE64 }} # base64 encoded
     steps:
       - uses: actions/checkout@v3
-      - run: git tag "$TAG"
+      - run: |
+          git tag "$TAG"
+          if [ -z "$GPG_PASSPHRASE" ]; then
+            echo NO_SIGN=true >> $GITHUB_ENV
+          fi
+
       - name: Build all platforms:arch
         run: make ci/fake-prerelease
       - name: Upload artifacts for next job
@@ -130,7 +136,13 @@ jobs:
 
       - name: Get PFX certificate from GH secrets
         shell: bash
-        run: printf "%s" "$PFX_CERTIFICATE_BASE64" | base64 -d - > wincert.pfx
+        run: |
+          if [ -z "$PFX_CERTIFICATE_BASE64" ]; then
+            echo NO_SIGN=true >> $GITHUB_ENV
+          else
+            printf "%s" "$PFX_CERTIFICATE_BASE64" | base64 -d - > wincert.pfx
+          fi
+
       - name: Extract .exe
         shell: pwsh
         run: build\windows\extract_exe.ps1 "$env:INTEGRATION" ${{ matrix.goarch }} "$env:TAG"
