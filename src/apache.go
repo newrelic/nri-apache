@@ -4,17 +4,15 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/newrelic/infra-integrations-sdk/data/attribute"
 	"net/url"
 	"os"
 	"runtime"
 	"strings"
 	"time"
 
-	"github.com/newrelic/infra-integrations-sdk/data/metric"
-	"github.com/newrelic/infra-integrations-sdk/persist"
-
 	sdkArgs "github.com/newrelic/infra-integrations-sdk/args"
+	"github.com/newrelic/infra-integrations-sdk/data/attribute"
+	"github.com/newrelic/infra-integrations-sdk/data/metric"
 	"github.com/newrelic/infra-integrations-sdk/integration"
 	"github.com/newrelic/infra-integrations-sdk/log"
 )
@@ -54,7 +52,7 @@ func main() {
 	log.Debug("Starting Apache integration")
 	defer log.Debug("Apache integration exited")
 
-	i, err := createIntegration()
+	i, err := integration.New(integrationName, integrationVersion, integration.Args(&args))
 	fatalIfErr(err)
 
 	if args.ShowVersion {
@@ -124,22 +122,6 @@ func metricSet(e *integration.Entity, eventType, hostname, port string, remote b
 		eventType,
 		attribute.Attr("port", port),
 	)
-}
-
-// parseStatusURL will extract the hostname and the port from the apache status URL.
-func createIntegration() (*integration.Integration, error) {
-	cachePath := os.Getenv("NRIA_CACHE_PATH")
-	if cachePath == "" {
-		return integration.New(integrationName, integrationVersion, integration.Args(&args))
-	}
-
-	l := log.NewStdErr(args.Verbose)
-	s, err := persist.NewFileStore(cachePath, l, persist.DefaultTTL)
-	if err != nil {
-		return nil, err
-	}
-
-	return integration.New(integrationName, integrationVersion, integration.Args(&args), integration.Storer(s), integration.Logger(l))
 }
 
 // parseStatusURL will extract the hostname and the port from the nginx status URL.
