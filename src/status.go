@@ -12,7 +12,7 @@ import (
 
 	"time"
 
-	"github.com/newrelic/infra-integrations-sdk/log"
+	"github.com/newrelic/infra-integrations-sdk/v3/log"
 )
 
 // Status will create new HTTP client based on its configuration

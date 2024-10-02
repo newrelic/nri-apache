@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"github.com/newrelic/infra-integrations-sdk/data/inventory"
+	"github.com/newrelic/infra-integrations-sdk/v3/data/inventory"
 	"strings"
 	"testing"
 )

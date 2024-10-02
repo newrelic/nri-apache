@@ -5,7 +5,7 @@ package integration
 import (
 	"flag"
 	"fmt"
-	"github.com/newrelic/infra-integrations-sdk/log"
+	"github.com/newrelic/infra-integrations-sdk/v3/log"
 	"github.com/newrelic/nri-apache/tests/integration/helpers"
 	"github.com/newrelic/nri-apache/tests/integration/jsonschema"
 	"github.com/stretchr/testify/assert"
