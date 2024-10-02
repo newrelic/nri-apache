@@ -2,9 +2,10 @@ package main
 
 import (
 	"bufio"
-	"github.com/newrelic/infra-integrations-sdk/v3/data/inventory"
 	"strings"
 	"testing"
+
+	"github.com/newrelic/infra-integrations-sdk/v3/data/inventory"
 )
 
 var testGetModulesCorrectFormat = `Loaded Modules:

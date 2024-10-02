@@ -2,11 +2,12 @@ package main
 
 import (
 	"bufio"
-	"github.com/newrelic/infra-integrations-sdk/v3/data/attribute"
-	"github.com/newrelic/infra-integrations-sdk/v3/integration"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/newrelic/infra-integrations-sdk/v3/data/attribute"
+	"github.com/newrelic/infra-integrations-sdk/v3/integration"
 )
 
 var testApacheStatus = `Total Accesses: 66
