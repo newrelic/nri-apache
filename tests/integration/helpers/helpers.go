@@ -2,10 +2,11 @@ package helpers
 
 import (
 	"bytes"
-	"github.com/newrelic/infra-integrations-sdk/log"
 	"os/exec"
 	"strings"
 	"testing"
+
+	"github.com/newrelic/infra-integrations-sdk/v3/log"
 )
 
 // GetTestName returns the name of the running test.

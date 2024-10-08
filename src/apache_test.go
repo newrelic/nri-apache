@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/newrelic/infra-integrations-sdk/integration"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/newrelic/infra-integrations-sdk/v3/integration"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEntityLocal(t *testing.T) {

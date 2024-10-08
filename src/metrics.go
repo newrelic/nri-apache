@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/newrelic/infra-integrations-sdk/data/metric"
-	"github.com/newrelic/infra-integrations-sdk/log"
+	"github.com/newrelic/infra-integrations-sdk/v3/data/metric"
+	"github.com/newrelic/infra-integrations-sdk/v3/log"
 )
 
 const (
@@ -106,7 +106,7 @@ func getTotalWorkers(metrics map[string]interface{}) (float64, bool) {
 	return 0, false
 }
 
-//getBytes converts value of Total kBytes into bytes
+// getBytes converts value of Total kBytes into bytes
 func getBytes(metrics map[string]interface{}) (float64, bool) {
 	totalkBytes, ok := metrics["Total kBytes"].(int)
 	if ok {

@@ -5,12 +5,13 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/newrelic/infra-integrations-sdk/data/inventory"
-	"github.com/newrelic/infra-integrations-sdk/log"
 	"io"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/newrelic/infra-integrations-sdk/v3/data/inventory"
+	"github.com/newrelic/infra-integrations-sdk/v3/log"
 )
 
 var errBinaryNotFound = errors.New("could not find apache binary")
