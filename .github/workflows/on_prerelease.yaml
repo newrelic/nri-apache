@@ -13,4 +13,7 @@ jobs:
     with:
       tag: ${{ github.event.release.tag_name }}
       integration: "apache"
+      upload_fips_packages: true
+      dest_prefix: fips-test-nri-apache-rahul/
+      test_package: false
     secrets: inherit
