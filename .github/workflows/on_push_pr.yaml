@@ -14,5 +14,4 @@ jobs:
     secrets: inherit
     with:
       run_test_build_nix: false
-      run_test_build_fake_prerelease: true
       integration: "apache"
