@@ -8,14 +8,11 @@ Unreleased section should follow [Release Toolkit](https://github.com/newrelic/r
 
 ## Unreleased
 
-### 🚀 Enhancements
+### enhancement
 - Onboard nri-apache to agent-control catalog (#165)
 
-### 🛡️ Security notices
+### security
 - Updated golang patch version to v1.26.6 to address CVEs in net/http, crypto/tls, encoding/asn1, encoding/xml, and golang.org/x/mod (#166)
-
-### ⛓️ Dependencies
-- Updated github.com/stretchr/testify to v1.12.1
 
 ## v1.17.3 - 2026-07-20
 
