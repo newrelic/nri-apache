@@ -8,11 +8,16 @@ Unreleased section should follow [Release Toolkit](https://github.com/newrelic/r
 
 ## Unreleased
 
-### enhancement
+## v1.18.0 - 2026-09-02
+
+### 🛡️ Security notices
+- Updated golang patch version to v1.26.6 to address CVEs in net/http, crypto/tls, encoding/asn1, encoding/xml, and golang.org/x/mod (#166)
+
+### 🚀 Enhancements
 - Onboard nri-apache to agent-control catalog (#165)
 
-### security
-- Updated golang patch version to v1.26.6 to address CVEs in net/http, crypto/tls, encoding/asn1, encoding/xml, and golang.org/x/mod (#166)
+### ⛓️ Dependencies
+- Updated golang patch version to v1.26.6
 
 ## v1.17.3 - 2026-07-20
 
