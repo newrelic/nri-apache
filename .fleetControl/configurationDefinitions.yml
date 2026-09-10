@@ -1,13 +1,11 @@
 configurationDefinitions:
   - platform: HOST
-    description: apache integration configuration
-    type: agent-config
+    type: AgentConfig
     version: 1.0.0
     format: yml
     operatingSystem: LINUX
   - platform: HOST
-    description: apache integration configuration
-    type: agent-config
+    type: AgentConfig
     version: 1.0.0
     format: yml
     operatingSystem: WINDOWS
