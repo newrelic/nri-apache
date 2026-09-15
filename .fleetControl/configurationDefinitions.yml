@@ -4,8 +4,24 @@ configurationDefinitions:
     version: 1.0.0
     format: yml
     operatingSystem: LINUX
+    bindings:
+      - type: CONFIGURES
+        targetType: AGENT
+        target: NRIApache
+        versions:
+          - ">1.17.0"
+        platform: HOST
+        operatingSystem: LINUX
   - platform: HOST
     type: AgentConfig
     version: 1.0.0
     format: yml
     operatingSystem: WINDOWS
+    bindings:
+      - type: CONFIGURES
+        targetType: AGENT
+        target: NRIApache
+        versions:
+          - ">1.17.0"
+        platform: HOST
+        operatingSystem: WINDOWS
