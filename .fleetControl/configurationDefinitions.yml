@@ -10,8 +10,6 @@ configurationDefinitions:
         target: NRIApache
         versions:
           - ">1.17.0"
-        platform: HOST
-        operatingSystem: LINUX
   - platform: HOST
     type: AgentConfig
     version: 1.0.0
@@ -23,5 +21,3 @@ configurationDefinitions:
         target: NRIApache
         versions:
           - ">1.17.0"
-        platform: HOST
-        operatingSystem: WINDOWS
